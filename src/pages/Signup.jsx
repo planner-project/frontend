@@ -25,7 +25,7 @@ const Signup = () => {
           <BlueBtn>Email 인증</BlueBtn>
         </StyledFlexWrap>
         <StyledInput placeholder="닉네임" mb />
-        <StyledInput placeholder="비밀번호" mb />
+        <StyledInput placeholder="비밀번호" type="password" mb />
         <StyledBtn fullWidth>가입하기</StyledBtn>
         <StyledParagraph>소셜 로그인</StyledParagraph>
         <ImageWrap>
