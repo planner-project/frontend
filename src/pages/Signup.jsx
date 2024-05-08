@@ -26,6 +26,7 @@ const Signup = () => {
         </StyledFlexWrap>
         <StyledInput placeholder="닉네임" mb />
         <StyledInput placeholder="비밀번호" type="password" mb />
+        <StyledInput placeholder="생년월일 8자리" maxLength={8} mb />
         <StyledBtn fullWidth>가입하기</StyledBtn>
         <StyledParagraph>소셜 로그인</StyledParagraph>
         <ImageWrap>

@@ -52,6 +52,14 @@ const StyledInput = styled.input`
   &:focus {
     outline: none;
   }
+  &[type="date"]::before {
+    content: attr(data-placeholder);
+    width: 100%;
+  }
+  &[type="date"]:focus::before,
+  &[type="date"]:valid::before {
+    display: none;
+  }
 `;
 
 const StyledFlexWrap = styled.div`
