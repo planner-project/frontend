@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Link } from "react-router-dom";
 
 const StyledFormLayout = styled.section`
@@ -41,7 +41,7 @@ const StyledLink = styled(Link)`
 `;
 
 const StyledInput = styled.input`
-  margin-bottom: ${(props) => (props.mb ? "30px" : "0")};
+  margin-bottom: ${(props) => (props.$mb ? "30px" : "0")};
   margin-top: ${(props) => (props.mt ? "30px" : "0")};
   padding: 0 20px 0;
   width: 100%;
@@ -49,8 +49,19 @@ const StyledInput = styled.input`
   border: 1px solid #98a2b3;
   border-radius: 12px;
   box-sizing: border-box;
+
+  &::placeholder {
+    color: #98a2b3;
+    font-size: 1rem;
+  }
   &:focus {
     outline: none;
+  }
+  &:disabled {
+    background-image: url("images/calendar.png");
+    background-repeat: no-repeat;
+    background-position: right 20px center;
+    background-color: transparent;
   }
   &[type="date"]::before {
     content: attr(data-placeholder);
@@ -59,6 +70,37 @@ const StyledInput = styled.input`
   &[type="date"]:focus::before,
   &[type="date"]:valid::before {
     display: none;
+  }
+  ${(props) =>
+    props.$birth &&
+    css`
+      cursor: pointer;
+    `}
+`;
+
+const BirthWrap = styled.div`
+  position: relative;
+`;
+
+const StyledInputLike = styled.div`
+  margin-bottom: ${(props) => (props.$mb ? "30px" : "0")};
+  margin-top: ${(props) => (props.mt ? "30px" : "0")};
+  padding: 0 20px 0;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  text-align: left;
+  color: #98a2b3;
+  font-size: 1rem;
+  border: 1px solid #98a2b3;
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  img {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
   }
 `;
 
@@ -113,4 +155,6 @@ export {
   StyledFlexWrap,
   StyledParagraph,
   ImageWrap,
+  StyledInputLike,
+  BirthWrap,
 };
