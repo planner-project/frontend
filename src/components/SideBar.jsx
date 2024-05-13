@@ -4,6 +4,7 @@ import SideBar_Account from "./SideBar_Account";
 import SideBar_Menu from "./SideBar_Menu";
 
 const Container = styled.div`
+  position: fixed;
   width: 15vw;
   width: 340px;
   height: 100vh;
@@ -52,6 +53,7 @@ const ToggleBtn = styled.div`
     width: 28px;
   }
 `;
+
 
 function SideBar() {
   const [isOpen, setIsOpen] = useState(true);
