@@ -15,7 +15,7 @@ const Container = styled.div`
   flex-direction: column;
   position: fixed;
   transition: left 0.5s ease;
-  left: ${(props) => (props.isOpen ? "0" : "-310px")};
+  left: ${(props) => (props.$isopen ? "0" : "-310px")};
 `;
 
 const LogoContainer = styled.div`
@@ -38,38 +38,36 @@ const ToggleBtn = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   background-color: #fff;
   border-radius: 50%;
   cursor: pointer;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   position: absolute;
   top: 30px;
-  right: -25px;
+  right: -20px;
   transition: transform 0.6s ease;
-  transform: ${(props) => (props.isOpen ? "rotate(0deg)" : "rotate(180deg)")};
+  transform: ${(props) => (props.$isopen ? "rotate(0deg)" : "rotate(180deg)")};
   img {
     width: 28px;
   }
 `;
 
-
 function SideBar() {
   const [isOpen, setIsOpen] = useState(true);
 
   const toggleMenu = () => {
-    console.log("click");
     setIsOpen(!isOpen);
   };
   return (
-    <Container isOpen={isOpen}>
+    <Container $isopen={isOpen}>
       <LogoContainer>
         <Logo></Logo>
       </LogoContainer>
       <SideBar_Account></SideBar_Account>
       <SideBar_Menu></SideBar_Menu>
-      <ToggleBtn isOpen={isOpen} onClick={toggleMenu}>
+      <ToggleBtn $isopen={isOpen} onClick={toggleMenu}>
         <img src="images/left.png" alt="navButton" />
       </ToggleBtn>
     </Container>
