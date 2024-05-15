@@ -64,6 +64,9 @@ const Signup = () => {
 
     if(!email.includes("@")) {
       toast.error("이메일 형식이 올바르지 않습니다.");
+      event.target.style.border = '1px solid red';
+    } else {
+      event.target.style.border = '1px solid #98a2b3';
     }
   };
 
@@ -72,6 +75,9 @@ const Signup = () => {
 
     if(!(password.length >= 8 && password.length <= 20)) {
       toast.error("비밀번호는 8 - 20자리여야 합니다.");
+      event.target.style.border = '1px solid red';
+    } else {
+      event.target.style.border = '1px solid #98a2b3';
     }
 
     const hasLetter = /[a-zA-Z]/.test(password);
@@ -80,6 +86,9 @@ const Signup = () => {
 
     if(!(hasLetter && hasNumber && hasSpecial)) {
       toast.error("비밀번호는 영어, 숫자, 특수문자로 이루어져야 합니다.");
+      event.target.style.border = '1px solid red';
+    } else {
+      event.target.style.border = '1px solid #98a2b3';
     }
   }
 
@@ -88,12 +97,16 @@ const Signup = () => {
 
     if (!(nickname.length >= 2 && nickname.length <= 12)) {
       toast.error("닉네임은 2 - 12자리여야 합니다.");
+      event.target.style.border = '1px solid red';
+    } else {
+      event.target.style.border = '1px solid #98a2b3';
     }
 
     const hasSpecial = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(nickname);
 
     if(hasSpecial) {
       toast.error("닉네임은 특수문자를 포함하지 않아야 합니다.");
+      event.target.style.border = '1px solid red';
     }
   };
 
