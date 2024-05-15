@@ -119,18 +119,22 @@ const Signup = () => {
       nickname: userData.nickname,
       birthday: userData.birthday,
     };
-
-    axios.post('http://localhost:8080/api/v1/auth/signup?_csrf=Z0w1KzCCJZHEpRwIIkfYjx2zQ5CiNUnCHM2S16OGJkjTfaPzVXwFH1a6Rqjpxi85EWrs7iyAbqmQVnHvf6j345LgQ3nkHJDD HTTP/1.1', userSignData)
+    console.log(userData);
+    if(!(userData.email !== '' && userData.password !== '' && userData.nickname !== '' && userData.birthday.length !== 1)) {
+      toast.error("모든 칸을 입력해주세요.");
+    } else {
+      axios.post('http://localhost:8080/api/v1/auth/signup?_csrf=Z0w1KzCCJZHEpRwIIkfYjx2zQ5CiNUnCHM2S16OGJkjTfaPzVXwFH1a6Rqjpxi85EWrs7iyAbqmQVnHvf6j345LgQ3nkHJDD HTTP/1.1', userSignData)
       .then(response => {
         console.log(response);
         if(response.status === 200) {
-          alert("회원가입이 정상 처리 되었습니다.");
+          toast("회원가입이 정상 처리 되었습니다.");
         }
       })
       .catch(error => {
-        console.error('There was an error!', error);
-        alert("회원가입에 실패하였습니다.");
+        toast.error("회원가입에 실패하였습니다.");
       });
+    }
+
   }
 
   return (
