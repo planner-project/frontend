@@ -1,8 +1,30 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  ${(props) =>
+    props.$gap &&
+    css`
+      gap: ${props.$gap};
+    `}
+  ${(props) =>
+    props.$margin &&
+    css`
+      margin: ${props.$margin};
+    `}
+    ${(props) =>
+    props.$display &&
+    css`
+      display: ${props.$display};
+    `}
+`;
 
 const StyledBtn = styled.button`
   min-width: 100px;
   height: 50px;
+  line-height: 50px;
   width: ${(props) => (props.$fullWidth ? "100%" : "auto")};
   border: none;
   padding: 0 10px;
@@ -11,6 +33,11 @@ const StyledBtn = styled.button`
   font-weight: bold;
   font-size: 1.2rem;
   cursor: pointer;
+  ${(props) =>
+    props.$margin &&
+    css`
+      margin: ${props.$margin};
+    `}
 `;
 
 const BlueBtn = styled(StyledBtn)`
@@ -20,4 +47,16 @@ const BlueBtn = styled(StyledBtn)`
   font-size: 1rem;
 `;
 
-export { StyledBtn, BlueBtn };
+const BlackBtn = styled(StyledBtn)`
+  padding: 0 20px;
+  min-width: auto;
+  height: 28px;
+  line-height: 28px;
+  font-weight: normal;
+  background-color: rgba(25, 25, 25, 0.65);
+  color: #fff;
+  font-size: 0.7rem;
+  border-radius: 100px;
+`;
+
+export { StyledBtn, BlueBtn, BlackBtn, ButtonWrapper };
