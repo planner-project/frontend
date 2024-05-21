@@ -47,6 +47,13 @@ const BlueBtn = styled(StyledBtn)`
   font-size: 1rem;
 `;
 
+const GrayBtn = styled(StyledBtn)`
+  background-color: #a8a8a8;
+  color: #fff;
+  font-weight: normal;
+  font-size: 1rem;
+`;
+
 const BlackBtn = styled(StyledBtn)`
   padding: 0 20px;
   min-width: auto;
@@ -59,4 +66,4 @@ const BlackBtn = styled(StyledBtn)`
   border-radius: 100px;
 `;
 
-export { StyledBtn, BlueBtn, BlackBtn, ButtonWrapper };
+export { StyledBtn, BlueBtn, BlackBtn, GrayBtn, ButtonWrapper };

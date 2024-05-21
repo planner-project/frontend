@@ -8,15 +8,14 @@ const InputLine = styled.input`
     css`
       margin: ${props.$margin};
     `}
-  padding: 0 10px 0;
   width: 70%;
   height: 35px;
   background: none;
-  color: #fff;
+  color: #000;
   border: none;
-  border-bottom: 1px solid #fff;
+  border-bottom: 1px solid #000;
   box-sizing: border-box;
-
+  font-size: 1.1rem;
   &::placeholder {
     color: #98a2b3;
     font-size: 1rem;
@@ -24,6 +23,13 @@ const InputLine = styled.input`
   &:focus {
     outline: none;
   }
+  ${(props) =>
+    props.type === "file" &&
+    css`
+      margin: 20px 0 0;
+      border: none;
+      font-size: 0.8rem;
+    `}
 `;
 
 export { FormLine, InputLine };
