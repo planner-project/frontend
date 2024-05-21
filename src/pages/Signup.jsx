@@ -1,7 +1,7 @@
 import { StyledBtn, BlueBtn } from "../components/Button.jsx";
 import axios from "axios";
-// import { toast, ToastContainer } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   StyledFormLayout,
   StyledForm,
@@ -140,7 +140,7 @@ const Signup = () => {
             toast("회원가입이 정상 처리 되었습니다.");
           }
         })
-        .catch((error) => {
+        .catch(() => {
           toast.error("회원가입에 실패하였습니다.");
         });
     }
