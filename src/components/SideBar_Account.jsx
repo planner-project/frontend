@@ -1,5 +1,7 @@
 import { styled } from 'styled-components';
 import useUserStore from '../store';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const AccountContainer = styled.div`
   width: 100%;
@@ -73,6 +75,19 @@ const LogoutP = styled.p`
 `
 function SideBar_Account() {
   const user = useUserStore(state => state.user);
+  const navigate = useNavigate();
+
+  const handleLogout = (event) => {
+    event.preventDefault();
+
+    axios.post('http://localhost:8080/api/v1/auth/logout', "")
+    .then(response => {
+      if(response.status === 200) {
+        sessionStorage.removeItem("Authorization");
+        navigate("/Login");
+      }
+    });
+  }
 
   return (
     <AccountContainer>
@@ -83,7 +98,7 @@ function SideBar_Account() {
           <UserName>{`${user.nickname} #${user.userTag}`}</UserName>
         </UserInfoContainer>
       </UserContainer>
-      <LogoutContainer>
+      <LogoutContainer onClick={handleLogout}>
         <Icon src={'../../public/logout.png'}></Icon>
         <LogoutP>로그아웃</LogoutP>
       </LogoutContainer>
