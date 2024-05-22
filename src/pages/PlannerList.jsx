@@ -23,7 +23,7 @@ const PlannerList = () => {
     try {
       console.log("click");
       const response = await axios.post(
-        "http://localhost:8080/api/v1/users/1/planner",
+        "http://localhost:8080/api/v1/users/1/planners",
         plan
       );
       console.log("Response:", response);
