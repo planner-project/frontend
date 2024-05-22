@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import useUserStore from '../store';
 
 const AccountContainer = styled.div`
   width: 100%;
@@ -46,16 +47,6 @@ const UserName = styled.p`
   height: 22px;
   font-family: 'Pretendard', serif;
   font-size: 18px;
-`
-
-const UserEmail = styled.p`
-  text-overflow:ellipsis;
-  overflow: hidden;
-  width: 90px;
-  height: 22px;
-  font-family: 'Pretendard', serif;
-  font-size: 18px;
-  color: #909090;
 `;
 
 const LogoutContainer = styled.div`
@@ -81,14 +72,15 @@ const LogoutP = styled.p`
   color: #878787;
 `
 function SideBar_Account() {
+  const user = useUserStore(state => state.user);
+
   return (
     <AccountContainer>
       <Title>Account</Title>
       <UserContainer>
         <UserImg></UserImg>
         <UserInfoContainer>
-          <UserName>수민#9392</UserName>
-          <UserEmail>marisol03@naver.com</UserEmail>
+          <UserName>{`${user.nickname} #${user.userTag}`}</UserName>
         </UserInfoContainer>
       </UserContainer>
       <LogoutContainer>

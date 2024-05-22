@@ -1,6 +1,7 @@
 import { StyledBtn } from "../components/Button.jsx";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import useUserStore from '../store.jsx';
 import axios from 'axios';
 import { toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,7 +19,8 @@ import {
 const Login = () => {
   const navigate = useNavigate();
   const session = window.sessionStorage.getItem("Authorization");
-  const [isLoggedIn, setIsLoggedIn] = useState(session ? true : false);
+  const [isLoggedIn] = useState(session ? true : false);
+  const { user, setUser } = useUserStore();
 
     useEffect(() => {
       if(isLoggedIn) {
@@ -51,6 +53,17 @@ const Login = () => {
     }
   }
 
+  const saveUserData = (token) => {
+    axios.get('http://localhost:8080/api/v1/auth/user', {
+      headers: {
+        'Authorization':token
+      }
+    }).then((response) => {
+      setUser(response.data);
+    });
+    
+  }
+
   const handleLogin = (event) => {
     event.preventDefault();
 
@@ -62,11 +75,13 @@ const Login = () => {
     if(!(userData.email !== '' && userData.password !== '')) {
       toast.error("모든 칸을 입력해주세요.");
     } else {
-      axios.post('http://localhost:8080/api/v1/auth/login?_csrf=b3FAPxvmharHeYhDiCAkkpyxBixIdFmexBEJihUNsGjz1vZODEQmWyzWtJ3qHLom6Q0Qq6TSKxV_QG2zoShquiNriFrEtMd_ HTTP/1.1', userLoginData)
+      axios.post('http://localhost:8080/api/v1/auth/login?_csrf=b3FAPxvmharHeYhDiCAkkpyxBixIdFmexBEJihUNsGjz1vZODEQmWyzWtJ3qHLom6Q0Qq6TSKxV_QG2zoShquiNriFrEtMd_', userLoginData)
       .then(response => {
         if(response.status === 200) {
           toast("로그인이 정상 처리 되었습니다.");
           sessionStorage.setItem("Authorization", response.headers.authorization);
+          saveUserData(response.headers.authorization);
+          navigate("/dashBoard");
         }
       })
       .catch(() => {
