@@ -66,4 +66,17 @@ const BlackBtn = styled(StyledBtn)`
   border-radius: 100px;
 `;
 
-export { StyledBtn, BlueBtn, BlackBtn, GrayBtn, ButtonWrapper };
+const ImgBtn = styled.button`
+  cursor: pointer;
+  border: none;
+  background: none;
+
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  img {
+    width: 24px;
+  }
+`;
+
+export { StyledBtn, BlueBtn, BlackBtn, GrayBtn, ButtonWrapper, ImgBtn };
