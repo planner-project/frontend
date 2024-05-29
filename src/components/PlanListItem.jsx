@@ -56,7 +56,8 @@ const ListItem = styled.li`
   border-radius: 20px;
 `;
 
-const PlanListItem = () => {
+const PlanListItem = ({ plan }) => {
+  const { title, startDate, endDate } = plan;
   const deleteHandler = () => {
     MySwal.fire({
       text: "정말 삭제하시겠습니까?",
@@ -76,11 +77,14 @@ const PlanListItem = () => {
           <BlackBtn onClick={deleteHandler}>삭제</BlackBtn>
         </ButtonWrapper>
         <Inner>
-          <Typo $color="#fff" $size="0.9rem">
-            2024.04.04 금요일
-          </Typo>
+          {startDate && (
+            <Typo $color="#fff" $size="0.9rem">
+              {new Date(startDate).toLocaleDateString()} -{" "}
+              {new Date(endDate).toLocaleDateString()}
+            </Typo>
+          )}
           <Typo $color="#fff" $weight="bold" $size="1.2rem" $margin="10px 0 0">
-            스위스 여행
+            {title}
           </Typo>
 
           <GroupList>
