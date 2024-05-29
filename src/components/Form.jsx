@@ -27,7 +27,7 @@ const StyledTitle = styled.h1`
 `;
 
 const StyledCaption = styled.p`
-  text-align: ${(props) => (props.textLeft ? "left" : "center")};
+  text-align: ${(props) => (props.$textLeft ? "left" : "center")};
   margin: 20px 0 40px;
   font-size: 1.2rem;
   color: #475467;
@@ -42,7 +42,7 @@ const StyledLink = styled(Link)`
 
 const StyledInput = styled.input`
   margin-bottom: ${(props) => (props.$mb ? "30px" : "0")};
-  margin-top: ${(props) => (props.mt ? "30px" : "0")};
+  margin-top: ${(props) => (props.$mt ? "30px" : "0")};
   padding: 0 20px 0;
   width: 100%;
   height: 50px;
@@ -76,6 +76,10 @@ const StyledInput = styled.input`
     css`
       cursor: pointer;
     `}
+  &[type="checkbox"] {
+    width: 20px;
+    margin: 0;
+  }
 `;
 
 const BirthWrap = styled.div`
@@ -84,7 +88,7 @@ const BirthWrap = styled.div`
 
 const StyledInputLike = styled.div`
   margin-bottom: ${(props) => (props.$mb ? "30px" : "0")};
-  margin-top: ${(props) => (props.mt ? "30px" : "0")};
+  margin-top: ${(props) => (props.$mt ? "30px" : "0")};
   padding: 0 20px 0;
   width: 100%;
   height: 50px;

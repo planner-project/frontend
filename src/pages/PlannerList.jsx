@@ -4,13 +4,19 @@ import SideBar from "../components/SideBar";
 import { BlueBtn, ButtonWrapper, ImgBtn } from "../components/Button";
 import PlanListItem from "../components/PlanListItem";
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Modal from "react-modal";
 import { Typo } from "../components/Typo";
 import { FormLine } from "../components/FormLine";
-import { BirthWrap, StyledInput, StyledInputLike } from "../components/Form";
+import {
+  BirthWrap,
+  StyledCaption,
+  StyledInput,
+  StyledInputLike,
+} from "../components/Form";
 import { StyledCalendar, StyledCalendarWrapper } from "../components/Calendar";
+import useUserStore from "../store";
 
 const PlanListWrap = styled.div`
   display: grid;
@@ -36,26 +42,10 @@ const customStyles = {
   },
 };
 const PlannerList = () => {
-  const [plan, setPlanner] = useState({
-    title: "플래너 제목",
-    isPrivate: true,
-  });
-
-  const postPlanner = async () => {
-    try {
-      console.log("click");
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/users/1/planners",
-        plan
-      );
-      console.log("Response:", response);
-      // handle response, update state, etc.
-    } catch (error) {
-      console.error("There was an error!", error);
-      // handle error
-    }
-  };
   const [modalOpen, setModalOpen] = useState(false);
+  const [title, setTitle] = useState("");
+  const [isPrivate, setIsPrivate] = useState(false);
+  const [plans, setPlans] = useState([]);
   const showModal = () => {
     setModalOpen(true);
   };
@@ -63,24 +53,47 @@ const PlannerList = () => {
     setModalOpen(false);
   }
 
-  const [isShow, setIsShow] = useState(false);
-  const [isSelect, setIsSelect] = useState(false);
-  const [date, setDate] = useState();
-  const handleOnClick = () => {
-    setIsShow(!isShow);
+  const token = sessionStorage.getItem("Authorization");
+  const config = {
+    headers: {
+      Authorization: token,
+    },
   };
-  const handleOnChange = (value) => {
-    setIsShow(!isShow);
-    setIsSelect(true);
+  const { user } = useUserStore();
+  const fetchPlans = async () => {
+    if (!user || !user.userId) return;
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/v1/users/${user.userId}/planners`,
+        config
+      );
+      setPlans(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    fetchPlans();
+  }, [user]);
+  const postPlanner = async () => {
+    if (!user || !user.userId) return;
+    const plan = {
+      title,
+      isPrivate,
+    };
 
-    const year = value.getFullYear();
-    const month = value.getMonth() + 1; // 월은 0부터 시작하므로 1을 더합니다.
-    const day = value.getDate();
-
-    // setUserData((prevUserData) => ({
-    //   ...prevUserData,
-    //   birthday: [year, month, day],
-    // }));
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/api/v1/users/${user.userId}/planners`,
+        plan,
+        config
+      );
+      console.log(response);
+      setModalOpen(false);
+      fetchPlans();
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <div>
@@ -93,13 +106,9 @@ const PlannerList = () => {
           </BlueBtn>
         </ButtonWrapper>
         <PlanListWrap>
-          <PlanListItem />
-          <PlanListItem />
-          <PlanListItem />
-          <PlanListItem />
-          <PlanListItem />
-          <PlanListItem />
-          <PlanListItem />
+          {plans.map((plan) => (
+            <PlanListItem key={plan.plannerId} plan={plan} />
+          ))}
         </PlanListWrap>
         <Modal
           isOpen={modalOpen}
@@ -114,28 +123,27 @@ const PlannerList = () => {
             <Typo $size="1.1rem" $weight="bold">
               플랜생성하기
             </Typo>
-            <StyledInput placeholder="제목을 입력해주세요" mt />
+            <StyledInput
+              placeholder="제목을 입력해주세요"
+              $mt
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <Typo $size="0.8rem" $margin="30px 0 0">
+              공개여부
+            </Typo>
+            <StyledInput
+              type="checkbox"
+              checked={isPrivate}
+              onChange={(e) => setIsPrivate(e.target.checked)}
+              $mt
+            />
           </FormLine>
 
-          <BirthWrap>
-            <StyledInputLike name={"birthday"} onClick={handleOnClick} mt>
-              {isSelect ? "" : "생년월일 8자리"}
-              {date ? date.toLocaleDateString() : ""}
-              <img src="images/calendar.png" />
-            </StyledInputLike>
-
-            {isShow && (
-              <StyledCalendarWrapper>
-                <StyledCalendar
-                  onClickDay={handleOnChange}
-                  onChange={setDate}
-                  value={date}
-                />
-              </StyledCalendarWrapper>
-            )}
-          </BirthWrap>
           <ButtonWrapper>
-            <BlueBtn $margin="20px 0 0">생성</BlueBtn>
+            <BlueBtn $margin="20px 0 0" onClick={postPlanner}>
+              생성
+            </BlueBtn>
           </ButtonWrapper>
         </Modal>
       </MainWrapper>
