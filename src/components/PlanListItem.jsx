@@ -3,6 +3,8 @@ import { Typo } from "./Typo";
 import { ButtonWrapper, BlackBtn } from "./Button";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import axios from "axios";
+import useUserStore from "../store";
 
 const MySwal = withReactContent(Swal);
 
@@ -56,20 +58,40 @@ const ListItem = styled.li`
   border-radius: 20px;
 `;
 
-const PlanListItem = ({ plan }) => {
-  const { title, startDate, endDate } = plan;
+const PlanListItem = ({ plan, fetchPlans }) => {
+  const { title, startDate, endDate, plannerId } = plan;
+  const { user } = useUserStore();
+  const token = sessionStorage.getItem("Authorization");
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+    data: {
+      userId: user.userId,
+    },
+  };
   const deleteHandler = () => {
     MySwal.fire({
       text: "정말 삭제하시겠습니까?",
       showCancelButton: true,
       confirmButtonText: "네",
       cancelButtonText: "아니요!",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        console.log("Item deleted");
+        try {
+          await axios.delete(
+            `http://localhost:8080/api/v1/users/${user.userId}/planners/${plannerId}`,
+            config
+          );
+          console.log("Item deleted");
+          fetchPlans();
+        } catch (error) {
+          console.error("Failed to delete item:", error);
+        }
       }
     });
   };
+
   return (
     <PlanBox>
       <BlackScreen>
