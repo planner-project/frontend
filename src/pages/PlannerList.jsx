@@ -101,7 +101,11 @@ const PlannerList = () => {
         </ButtonWrapper>
         <PlanListWrap>
           {plans.map((plan) => (
-            <PlanListItem key={plan.plannerId} plan={plan} />
+            <PlanListItem
+              key={plan.plannerId}
+              plan={plan}
+              fetchPlans={fetchPlans}
+            />
           ))}
         </PlanListWrap>
         <Modal
