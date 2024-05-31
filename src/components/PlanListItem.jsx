@@ -58,12 +58,9 @@ const ListItem = styled.li`
   border-radius: 20px;
 `;
 
-
 // eslint-disable-next-line react/prop-types
-const PlanListItem = ({ plan }) => {
-  // eslint-disable-next-line react/prop-types
-  const { title, startDate, endDate } = plan;
 const PlanListItem = ({ plan, fetchPlans }) => {
+  // eslint-disable-next-line react/prop-types
   const { title, startDate, endDate, plannerId } = plan;
   const { user } = useUserStore();
   const token = sessionStorage.getItem("Authorization");
