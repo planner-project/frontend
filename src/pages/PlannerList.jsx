@@ -9,13 +9,7 @@ import axios from "axios";
 import Modal from "react-modal";
 import { Typo } from "../components/Typo";
 import { FormLine } from "../components/FormLine";
-import {
-  BirthWrap,
-  StyledCaption,
-  StyledInput,
-  StyledInputLike,
-} from "../components/Form";
-import { StyledCalendar, StyledCalendarWrapper } from "../components/Calendar";
+import { StyledInput } from "../components/Form";
 import useUserStore from "../store";
 
 const PlanListWrap = styled.div`

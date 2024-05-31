@@ -79,4 +79,26 @@ const ImgBtn = styled.button`
   }
 `;
 
-export { StyledBtn, BlueBtn, BlackBtn, GrayBtn, ButtonWrapper, ImgBtn };
+const DeleteBtn = styled.button`
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  img {
+    width: 20px;
+  }
+  &:hover {
+    background: #ececec;
+  }
+`;
+
+export {
+  StyledBtn,
+  BlueBtn,
+  BlackBtn,
+  GrayBtn,
+  ButtonWrapper,
+  ImgBtn,
+  DeleteBtn,
+};
