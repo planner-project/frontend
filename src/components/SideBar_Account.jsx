@@ -82,10 +82,13 @@ function SideBar_Account() {
 
     axios.post('http://localhost:8080/api/v1/auth/logout', "")
     .then(response => {
-      if(response.status === 200) {
+      if(response.status === 401) {
         sessionStorage.removeItem("Authorization");
         navigate("/Login");
       }
+    }).catch(error => {
+      sessionStorage.removeItem("Authorization");
+      navigate("/Login");
     });
   }
 
