@@ -58,6 +58,11 @@ const ListItem = styled.li`
   border-radius: 20px;
 `;
 
+
+// eslint-disable-next-line react/prop-types
+const PlanListItem = ({ plan }) => {
+  // eslint-disable-next-line react/prop-types
+  const { title, startDate, endDate } = plan;
 const PlanListItem = ({ plan, fetchPlans }) => {
   const { title, startDate, endDate, plannerId } = plan;
   const { user } = useUserStore();
@@ -70,6 +75,7 @@ const PlanListItem = ({ plan, fetchPlans }) => {
       userId: user.userId,
     },
   };
+
   const deleteHandler = () => {
     MySwal.fire({
       text: "정말 삭제하시겠습니까?",
