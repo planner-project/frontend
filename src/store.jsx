@@ -3,12 +3,7 @@ import { persist } from 'zustand/middleware';
 
 const useUserStore = create(persist(
   (set) => ({
-    user: {
-      "userId": "",
-      "nickname": "",
-      "userTag": "",
-      "isBirthday": false,
-    },
+    user: {},
     setUser: user => set({ user})
   }),
   {
