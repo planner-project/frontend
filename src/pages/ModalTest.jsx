@@ -90,10 +90,12 @@ const ModalTest = () => {
             />
             {listOpen && (
               <SearchList>
-                <SearchListItem 
-                nickname={searchUser.nickname} 
-                userTag={searchUser.userTag}
-                email={searchUser.email}/>
+                { searchUser.nickname !== "" &&
+                  <SearchListItem 
+                  nickname={searchUser.nickname} 
+                  userTag={searchUser.userTag}
+                  email={searchUser.email}/>
+                }
               </SearchList>
             )}
           </SearchWrap>
@@ -104,10 +106,6 @@ const ModalTest = () => {
               <Typo>Email</Typo>
               <Typo>삭제</Typo>
             </ListItem>
-            <MemberListItem />
-            <MemberListItem />
-            <MemberListItem />
-            <MemberListItem />
             <MemberListItem />
           </MemberList>
         </Modal>
