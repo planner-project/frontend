@@ -79,6 +79,7 @@ const ModalTest = () => {
 
   const token = sessionStorage.getItem("Authorization");
   const { user } = useUserStore();
+  
   const addMember = () => {
     const config = {
       headers: {
@@ -92,13 +93,14 @@ const ModalTest = () => {
     userId, 
     config)
     .then(response => {
-      setMember(response.data);
+      fetchMember();
+      console.log(member)
       console.log(response);
     }).catch(error => {
       console.log(error);
     })
   }
-
+  
   const fetchMember = async() => {
     const config = {
       headers: {
@@ -157,9 +159,11 @@ const ModalTest = () => {
               member.map((user) => (
               <MemberListItem
                 key={user.groupMemberId}
+                groupMemberId={user.groupMemberId}
                 nickname={user.nickname}
                 isHost={user.isHost ? "그룹장" : "멤버"}
                 userTag={"#" + user.userTag}
+                fetchMember={fetchMember}
               />
           ))}
           </MemberList>
