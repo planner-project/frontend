@@ -1,9 +1,9 @@
 import { ListItem } from "./SearchInput";
 import { Typo } from "./Typo";
 
-const SearchListItem = ({nickname, userTag, email, onCLick}) => {
+const SearchListItem = ({nickname, userTag, email, onClick}) => {
   return (
-    <ListItem onClick={onCLick}>
+    <ListItem onClick={onClick}>
       <Typo $size="0.9rem">{nickname} #{userTag}</Typo>
       <Typo $size="0.8rem" $color="#6a6a6a" $margin="5px 0 0">
         {email}
