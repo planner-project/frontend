@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { MainWrapper } from "../components/MainWrap";
 import SideBar from "../components/SideBar";
@@ -8,6 +8,8 @@ import SearchListItem from "../components/SearchListItem";
 import { ListItem, MemberList } from "../components/MemberListStyle";
 import MemberListItem from "../components/MemberListItem";
 import { Typo } from "../components/Typo";
+import useUserStore from "../store";
+
 const customStyles = {
   content: {
     top: "50%",
@@ -28,12 +30,15 @@ const customStyles = {
 const ModalTest = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [searchUser, setSearchUser] = useState({
+    "userId": "",
     "nickname" : "",
     "userTag" : "",
     "email" : "",
   });
+  const [member, setMember] = useState([]);
   const showModal = () => {
     setModalOpen(true);
+    fetchMember();
   };
   function closeModal() {
     setModalOpen(false);
@@ -54,6 +59,7 @@ const ModalTest = () => {
       console.log(response);
       console.log(response.data);
       setSearchUser({
+        "userId": response.data[0].userId,
         "nickname": response.data[0].nickname,
         "userTag": response.data[0].userTag,
         "email": value,
@@ -68,6 +74,46 @@ const ModalTest = () => {
 
     if(value.includes("com") && value.includes("@")) {
       searchEmail(value);
+    }
+  };
+
+  const token = sessionStorage.getItem("Authorization");
+  const { user } = useUserStore();
+  const addMember = () => {
+    const config = {
+      headers: {
+        Authorization: token,
+      },
+    };
+    const userId = {
+      userId: searchUser.userId,
+    }
+    axios.post(`http://localhost:8080/api/v1/users/${user.userId}/planners/1/group`, 
+    userId, 
+    config)
+    .then(response => {
+      setMember(response.data);
+      console.log(response);
+    }).catch(error => {
+      console.log(error);
+    })
+  }
+
+  const fetchMember = async() => {
+    const config = {
+      headers: {
+        Authorization: token,
+      }
+    };
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/v1/users/${user.userId}/planners/1/group`,
+        config
+      );
+      setMember(response.data);
+      console.log(member);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -94,7 +140,8 @@ const ModalTest = () => {
                   <SearchListItem 
                   nickname={searchUser.nickname} 
                   userTag={searchUser.userTag}
-                  email={searchUser.email}/>
+                  email={searchUser.email}
+                  onClick={addMember}/>
                 }
               </SearchList>
             )}
@@ -103,10 +150,18 @@ const ModalTest = () => {
             <ListItem $head>
               <Typo>닉네임</Typo>
               <Typo>팀원 역할</Typo>
-              <Typo>Email</Typo>
+              <Typo>유저 태그</Typo>
               <Typo>삭제</Typo>
             </ListItem>
-            <MemberListItem />
+            {
+              member.map((user) => (
+              <MemberListItem
+                key={user.groupMemberId}
+                nickname={user.nickname}
+                isHost={user.isHost ? "그룹장" : "멤버"}
+                userTag={"#" + user.userTag}
+              />
+          ))}
           </MemberList>
         </Modal>
       </MainWrapper>
