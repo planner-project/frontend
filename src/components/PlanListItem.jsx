@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import axios from "axios";
 import useUserStore from "../store";
+import { useNavigate } from "react-router-dom";
 
 const MySwal = withReactContent(Swal);
 
@@ -72,6 +73,7 @@ const PlanListItem = ({ plan, fetchPlans }) => {
       userId: user.userId,
     },
   };
+  const navigate = useNavigate();
 
   const deleteHandler = () => {
     MySwal.fire({
@@ -96,7 +98,9 @@ const PlanListItem = ({ plan, fetchPlans }) => {
   };
 
   return (
-    <PlanBox>
+    <PlanBox onClick={() => {
+      navigate("/planner", {state: {plannerId: plannerId}})
+    }}>
       <BlackScreen>
         <ButtonWrapper $gap="5px" $margin="10px 20px 0 0" $display="none">
           <BlackBtn onClick={deleteHandler}>삭제</BlackBtn>
