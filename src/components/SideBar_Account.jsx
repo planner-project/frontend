@@ -1,4 +1,4 @@
-import { styled } from 'styled-components';
+import { styled, css } from 'styled-components';
 import useUserStore from '../store';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -34,7 +34,13 @@ const UserImg = styled.div`
   width: 60px;
   height: 60px;
   border-radius: 60px;
-  background-color: black;
+  ${(props) =>
+    props.$img &&
+    css`
+      background-image: url(${props.$img});
+      background-size: cover;
+      background-position: center;
+    `}
 `;
 
 const UserInfoContainer = styled.div`
@@ -96,7 +102,7 @@ function SideBar_Account() {
     <AccountContainer>
       <Title>Account</Title>
       <UserContainer>
-        <UserImg></UserImg>
+        <UserImg $img={user.profileImgUrl}></UserImg>
         <UserInfoContainer>
           <UserName>{`${user.nickname} #${user.userTag}`}</UserName>
         </UserInfoContainer>
