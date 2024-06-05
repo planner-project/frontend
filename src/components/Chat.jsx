@@ -79,50 +79,12 @@ const Message = styled.p`
   font-size: 9px;
 `;
 
-const Chat = () => {
+const Chat = ({clients}) => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [connected, setConnected] = useState(false);
   const [messageContent, setMessageContent] = useState('');
   const [messages, setMessage] = useState([]);
-  const client = useRef(null);
+  const client = clients;
   const { user } = useUserStore();
-
-  useEffect(() => {
-    const token = sessionStorage.getItem("Authorization").split(" ")[1];
-    const socketURL = `http://localhost:8080/ws?token=${token}`;
-
-    client.current = new Client({
-      webSocketFactory: () => new SockJS(socketURL),
-      debug: (str) => console.log(str),
-      reconnectDelay: 5000,
-      heartbeatIncoming: 4000,
-      heartbeatOutgoing: 4000,
-    });
-
-    client.current.onConnect = (frame) => {
-      console.log('Connected');
-      setConnected(true);
-      subscribe();
-    };
-
-    client.current.onDisconnect = (frame) => {
-      setConnected(false);
-      console.log('Disconnected');
-    };
-
-    client.current.onStompError = (frame) => {
-      console.error('Broker reported error: ' + frame.headers['message']);
-      console.error('Additional details: ' + frame.body);
-    };
-
-    client.current.activate();
-
-    return () => {
-      if (client.current) {
-        client.current.deactivate();
-      }
-    };
-  }, []);
 
   const showModal = () => {
     setModalOpen(true);
@@ -148,21 +110,6 @@ const Chat = () => {
       console.log(user);
       console.log(error);
     }
-  };
-
-  const subscribe = () => {
-    const subscriptionUrl = "/sub/planner/1";
-
-    client.current.subscribe(subscriptionUrl, (response) => {
-      const messageObject = JSON.parse(response.body);
-      if (messageObject.type === "chat") {
-        const object = {
-          ...messageObject,
-          isMe: messageObject.message.userId === user.userId,
-        };
-        setMessage((prevMessages) => [...prevMessages, object]);
-      }
-    });
   };
 
   const activeEnter = (e) => {
