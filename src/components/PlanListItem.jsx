@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Typo } from "./Typo";
 import { ButtonWrapper, BlackBtn } from "./Button";
 import Swal from "sweetalert2";
@@ -52,16 +52,18 @@ const GroupList = styled.ul`
 const ListItem = styled.li`
   width: 30px;
   height: 30px;
-  background-image: url("images/ragdoll.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100%;
   border-radius: 20px;
+  ${(props) =>
+    props.$img &&
+    css`
+      background-image: url(${props.$img});
+    `}
 `;
 
-// eslint-disable-next-line react/prop-types
-const PlanListItem = ({ plan, fetchPlans }) => {
-  // eslint-disable-next-line react/prop-types
+const PlanListItem = ({ plan, fetchPlans, groupMember }) => {
   const { title, startDate, endDate, plannerId } = plan;
   const { user } = useUserStore();
   const token = sessionStorage.getItem("Authorization");
@@ -98,9 +100,11 @@ const PlanListItem = ({ plan, fetchPlans }) => {
   };
 
   return (
-    <PlanBox onClick={() => {
-      navigate("/planner", {state: {plannerId: plannerId}})
-    }}>
+    <PlanBox
+      onClick={() => {
+        navigate("/planner", { state: { plannerId: plannerId } });
+      }}
+    >
       <BlackScreen>
         <ButtonWrapper $gap="5px" $margin="10px 20px 0 0" $display="none">
           <BlackBtn onClick={deleteHandler}>삭제</BlackBtn>
@@ -117,8 +121,14 @@ const PlanListItem = ({ plan, fetchPlans }) => {
           </Typo>
 
           <GroupList>
-            <ListItem></ListItem>
-            <ListItem></ListItem>
+            {[...groupMember].map((img, idx) => {
+              if (idx <= 3) {
+                return (
+                  <ListItem key={idx} $img={img === "" ? "images/ragdoll.jpg" : img}></ListItem>
+                );
+              }
+              return null;
+            })}
           </GroupList>
         </Inner>
       </BlackScreen>

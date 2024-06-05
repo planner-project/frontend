@@ -104,6 +104,7 @@ const PlannerList = () => {
             <PlanListItem
               key={plan.plannerId}
               plan={plan}
+              groupMember={plan.profileImages}
               fetchPlans={fetchPlans}
             />
           ))}

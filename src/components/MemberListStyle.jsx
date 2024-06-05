@@ -32,6 +32,13 @@ const ListItem = styled.li`
       font-weight: bold;
       border: none;
     `}
+    ${(props) =>
+    props.$img &&
+    css`
+      background-image: url(${props.$img});
+      background-size: cover;
+      background-position: center;
+    `}
 `;
 
 export { MemberList, ListItem };
