@@ -9,6 +9,7 @@ import {
   StyledCalendarWrapper,
   StyledCalendar,
 } from "../components/Calendar.jsx";
+import PlanBoxList from './PlanBox.jsx';
 
 const PlanBoxContainer = styled.div`
   width: auto;
@@ -16,6 +17,10 @@ const PlanBoxContainer = styled.div`
   overflow-x: auto;
 `;
 
+const PlanBoxWrapper = styled.div`
+  width: 317px;
+  height: auto;
+`
 const customStyles = {
   content: {
     top: "50%",
@@ -63,6 +68,7 @@ const PlanBox = () => {
 
   return (
     <PlanBoxContainer>
+      <PlanBoxList></PlanBoxList>
       <PlanBoxAddBtn onClick={showModal}><Typo>일정 박스 추가</Typo></PlanBoxAddBtn>
       <Modal
         isOpen={modalOpen}
