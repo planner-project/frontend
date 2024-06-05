@@ -153,7 +153,7 @@ const UserProfile = () => {
           ) : (
             <>
               <InfoWrap>
-                <ImageProfile src={formData.image} alt="profile" />
+                <ImageProfile src={user.profileImgUrl} alt="profile" />
                 <Info>
                   <InfoList>
                     <Typo $size="0.8rem" $color="#878787" $margin="0 0 10px 0">
