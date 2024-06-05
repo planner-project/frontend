@@ -93,6 +93,14 @@ const DeleteBtn = styled.button`
   }
 `;
 
+const PlanBoxAddBtn = styled.button`
+  width: 341px;
+  height: 78px;
+  background-color: rgba(255, 255, 255, 0.4);
+  border: 1px black dashed;
+  border-radius: 10px;
+`
+
 export {
   StyledBtn,
   BlueBtn,
@@ -101,4 +109,5 @@ export {
   ButtonWrapper,
   ImgBtn,
   DeleteBtn,
+  PlanBoxAddBtn,
 };

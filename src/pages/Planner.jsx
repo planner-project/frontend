@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import SockJS from "sockjs-client";
 import { Client } from '@stomp/stompjs';
+import PlanBox from "../components/PlanBoxItem";
 
 const Planner = () => {
   const location = useLocation();
@@ -59,6 +60,7 @@ const Planner = () => {
       <SideBar></SideBar>
       <MainWrapper>
       <GroupMember></GroupMember>
+      <PlanBox></PlanBox>
       <Chat clients={client}></Chat>
       </MainWrapper>
     </>
