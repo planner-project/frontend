@@ -9,6 +9,7 @@ import { ListItem, MemberList } from "../components/MemberListStyle";
 import MemberListItem from "../components/MemberListItem";
 import { Typo } from "../components/Typo";
 import useUserStore from "../store";
+import { GroupMemberAddBtn } from "../components/Button";
 
 const customStyles = {
   content: {
@@ -27,6 +28,7 @@ const customStyles = {
     zIndex: "10",
   },
 };
+
 const ModalTest = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [searchUser, setSearchUser] = useState({
@@ -99,6 +101,7 @@ const ModalTest = () => {
     }).catch(error => {
       console.log(error);
     })
+    setListOpen(false);
   }
   
   const fetchMember = async() => {
@@ -123,7 +126,7 @@ const ModalTest = () => {
     <>
       <SideBar />
       <MainWrapper>
-        <button onClick={showModal}>그룹 추가</button>
+        <GroupMemberAddBtn onClick={showModal}>+</GroupMemberAddBtn>
         <Modal
           isOpen={modalOpen}
           style={customStyles}
