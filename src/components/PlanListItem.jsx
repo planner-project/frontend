@@ -77,7 +77,8 @@ const PlanListItem = ({ plan, fetchPlans, groupMember }) => {
   };
   const navigate = useNavigate();
 
-  const deleteHandler = () => {
+  const deleteHandler = (e) => {
+    e.stopPropagation();
     MySwal.fire({
       text: "정말 삭제하시겠습니까?",
       showCancelButton: true,
@@ -100,11 +101,9 @@ const PlanListItem = ({ plan, fetchPlans, groupMember }) => {
   };
 
   return (
-    <PlanBox
-      onClick={() => {
-        navigate("/planner", { state: { plannerId: plannerId } });
-      }}
-    >
+    <PlanBox onClick={() => {
+      navigate("/planner", { state: { plannerId: plannerId } });
+    }}>
       <BlackScreen>
         <ButtonWrapper $gap="5px" $margin="10px 20px 0 0" $display="none">
           <BlackBtn onClick={deleteHandler}>삭제</BlackBtn>
