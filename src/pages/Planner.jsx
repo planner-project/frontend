@@ -59,7 +59,6 @@ const Planner = () => {
     <>
       <SideBar></SideBar>
       <MainWrapper>
-      <GroupMember></GroupMember>
       <PlanBox></PlanBox>
       <Chat clients={client}></Chat>
       </MainWrapper>

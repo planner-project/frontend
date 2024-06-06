@@ -99,6 +99,7 @@ const PlanBoxAddBtn = styled.button`
   background-color: rgba(255, 255, 255, 0.4);
   border: 1px black dashed;
   border-radius: 10px;
+  margin-top: 14px;
 `
 
 export {

@@ -9,18 +9,22 @@ import {
   StyledCalendarWrapper,
   StyledCalendar,
 } from "../components/Calendar.jsx";
-import PlanBoxList from './PlanBox.jsx';
+import { DragDropContext } from 'react-beautiful-dnd';
+import PlanBoxListItem from './PlanBoxListItem.jsx';
 
 const PlanBoxContainer = styled.div`
   width: auto;
   height: auto;
   overflow-x: auto;
+  display: flex;
+  gap: 40px;
 `;
 
 const PlanBoxWrapper = styled.div`
   width: 317px;
   height: auto;
-`
+`;
+
 const customStyles = {
   content: {
     top: "50%",
@@ -66,9 +70,12 @@ const PlanBox = () => {
     console.log(year, month, day);
   };
 
+  const onDragEnd = () => {console.log("g")};
+
   return (
     <PlanBoxContainer>
-      <PlanBoxList></PlanBoxList>
+      <DragDropContext onDragEnd={onDragEnd}>
+      <PlanBoxListItem></PlanBoxListItem>
       <PlanBoxAddBtn onClick={showModal}><Typo>일정 박스 추가</Typo></PlanBoxAddBtn>
       <Modal
         isOpen={modalOpen}
@@ -85,7 +92,7 @@ const PlanBox = () => {
           </Typo>
           <BirthWrap>
           <StyledInputLike name={"birthday"} onClick={handleOnClick} $mb>
-            {isSelect ? "" : "생년월일 8자리"}
+            {isSelect ? "" : "일정 날짜"}
             {date ? date.toLocaleDateString() : ""}
             <img src="images/calendar.png" />
           </StyledInputLike>
@@ -116,6 +123,7 @@ const PlanBox = () => {
             </BlueBtn>
           </ButtonWrapper>
       </Modal>
+      </DragDropContext>
     </PlanBoxContainer>
   );
 }
