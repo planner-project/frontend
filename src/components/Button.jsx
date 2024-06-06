@@ -100,7 +100,15 @@ const PlanBoxAddBtn = styled.button`
   border: 1px black dashed;
   border-radius: 10px;
   margin-top: 14px;
-`
+`;
+
+const GroupMemberAddBtn = styled.button`
+  width: 85px;
+  height: 85px;
+  border-radius: 85px;
+  border: 1px black dashed;
+  background-color: white;
+`;
 
 export {
   StyledBtn,
@@ -111,5 +119,6 @@ export {
   ImgBtn,
   DeleteBtn,
   PlanBoxAddBtn,
+  GroupMemberAddBtn
 };
 
