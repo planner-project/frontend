@@ -50,6 +50,7 @@ const PlanBox = ({clients, plannerId}) => {
   const [planDate, setPlanDate] = useState();
   const [isShow, setIsShow] = useState(false);
   const [isSelect, setIsSelect] = useState(false);
+  const client = clients;
 
   const showModal = () => {
     setModalOpen(true);
@@ -65,8 +66,10 @@ const PlanBox = ({clients, plannerId}) => {
     setIsSelect(true);
 
     const year = value.getFullYear();
-    const month = value.getMonth() + 1; // 월은 0부터 시작하므로 1을 더합니다.
-    const day = value.getDate();
+    let month = value.getMonth() + 1; // 월은 0부터 시작하므로 1을 더합니다.
+    month = month <= 9 ? "0" + String(month) : month;
+    let day = value.getDate();
+    day = day <= 9 ? "0" + String(day) : day;
     setPlanDate(`${year}-${month}-${day}`);
   };
 
@@ -78,9 +81,11 @@ const PlanBox = ({clients, plannerId}) => {
         planDate: planDate,
         isPrivate: isPrivate,
       };
-      clients.current.publish({
+      console.log(planDate)
+      client.current.publish({
         destination: `/pub/planner/${plannerId}/create`,
         body: JSON.stringify(body),
+        headers: {'Content-Type': 'application/json'},
       });
     } catch (error) {
       console.log(error);

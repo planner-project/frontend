@@ -25,7 +25,6 @@ const Typo = styled.p`
 `
 
 const PlanItem = ({plan}) => {
-  console.log(plan);
   return(
     <PlanContainer>
     </PlanContainer>

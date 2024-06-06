@@ -51,7 +51,9 @@ const Planner = () => {
     const subscriptionURL = `/sub/planner/${plannerId}`;
 
     client.current.subscribe(subscriptionURL, (response) => {
+      console.log(response);
       const messageObject = JSON.parse(response.body);
+      console.log(messageObject);
     })
   };
 
