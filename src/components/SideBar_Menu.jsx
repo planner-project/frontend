@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   margin-top: 19px;
@@ -40,18 +41,20 @@ const Title = styled.p`
 `
 
 function SideBar_Menu() {
+  const navigate = useNavigate();
+
   return(
     <Wrapper>
       <Title>Menu</Title>
-      <MenuContainer>
+      <MenuContainer onClick={() => navigate("/dashboard")}>
         <Icon src={'../../public/dashboard.png'}></Icon>
         <MenuName>대시보드</MenuName>
       </MenuContainer>
-      <MenuContainer>
+      <MenuContainer onClick={() => navigate("/user_profile")}>
         <Icon src={'../../public/user.png'}></Icon>
         <MenuName>프로필</MenuName>
       </MenuContainer>
-      <MenuContainer>
+      <MenuContainer onClick={() => navigate("/p_list")}>
         <Icon src={'../../public/planner.png'}></Icon>
         <MenuName>플래너</MenuName>
       </MenuContainer>
