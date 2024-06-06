@@ -43,10 +43,11 @@ const customStyles = {
   },
 };
 
-const PlanBox = () => {
+const PlanBox = ({clients, plannerId}) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [isPrivate, setIsPrivate] = useState(false);
   const [date, setDate] = useState();
+  const [planDate, setPlanDate] = useState();
   const [isShow, setIsShow] = useState(false);
   const [isSelect, setIsSelect] = useState(false);
 
@@ -66,12 +67,25 @@ const PlanBox = () => {
     const year = value.getFullYear();
     const month = value.getMonth() + 1; // 월은 0부터 시작하므로 1을 더합니다.
     const day = value.getDate();
-    
-    console.log(year, month, day);
+    setPlanDate(`${year}-${month}-${day}`);
   };
 
   const onDragEnd = () => {console.log("g")};
 
+  const addPlanBox = () => {
+    try {
+      const body = {
+        planDate: planDate,
+        isPrivate: isPrivate,
+      };
+      clients.current.publish({
+        destination: `/pub/planner/${plannerId}/create`,
+        body: JSON.stringify(body),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+}
   return (
     <PlanBoxContainer>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -118,7 +132,7 @@ const PlanBox = () => {
           />
         </FormLine>
         <ButtonWrapper>
-            <BlueBtn $margin="200px 0 0">
+            <BlueBtn $margin="200px 0 0" onClick={addPlanBox}>
               생성
             </BlueBtn>
           </ButtonWrapper>

@@ -53,13 +53,13 @@ const Planner = () => {
     client.current.subscribe(subscriptionURL, (response) => {
       const messageObject = JSON.parse(response.body);
     })
-  }
+  };
 
   return (
     <>
       <SideBar></SideBar>
       <MainWrapper>
-      <PlanBox></PlanBox>
+      <PlanBox clients={client} plannerId={plannerId}></PlanBox>
       <Chat clients={client}></Chat>
       </MainWrapper>
     </>
