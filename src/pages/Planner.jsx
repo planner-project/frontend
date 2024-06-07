@@ -55,8 +55,10 @@ const Planner = () => {
       const messageObject = JSON.parse(response.body);
       console.log(messageObject);
       if(messageObject["type"] === "create-planBox") {
-        console.log(messageObject["message"])
-        setPlanBoxdata(messageObject["message"]);
+        return setPlanBoxdata(messageObject["message"]);
+      }
+      if(messageObject["type"] === "delete-planBox") {
+        return setPlanBoxdata(messageObject["message"]);
       }
     });
   };
