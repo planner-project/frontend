@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import PlanItem from './PlanItem';
 import { Droppable } from 'react-beautiful-dnd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ImgBtn, ButtonWrapper, BlueBtn } from './Button';
 import { FormLine } from './FormLine';
 import { StyledInput } from "../components/Form";
@@ -63,13 +63,17 @@ const customStyles = {
   },
 };
 
-const PlanBoxListItem = () => {
+const PlanBoxListItem = ({ planBox, clients, plannerId }) => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [titleModalOpen, setTitleModalOpen] = useState(false);
   const [isPrivate, setIsPrivate] = useState(false);
-  const [title, setTitle] = useState();
-  const [time, setTime] = useState();
-  const [content, setContent] = useState();
-  const [address, setAdderess] = useState();
+  const [title, setTitle] = useState("");
+  const [time, setTime] = useState("");
+  const [content, setContent] = useState("");
+  const [address, setAdderess] = useState("");
+  const [planBoxData, setPlanBoxData] = useState(planBox || {});
+  const [isShow, setIsShow] = useState(false);
+  const client = clients;
 
   const showModal = () => {
     setModalOpen(true);
@@ -77,13 +81,74 @@ const PlanBoxListItem = () => {
   const closeModal = () => {
     setModalOpen(false);
   }
-  return(
+  const showTitleModal = () => {
+    setTitleModalOpen(true);
+  }
+  const closeTitleModal = () => {
+    setTitleModalOpen(false);
+  }
+
+  const deletePlanner = () => {
+    try {
+      client.current.publish({
+        destination: `/pub/planner/${plannerId}/delete/${planBoxData.planBoxId}`,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const createPlan = () => {
+    // 일정 생성 로직 추가
+  };
+
+  // Force Update hook
+  const useForceUpdate = () => {
+    const [value, setValue] = useState(0);
+    return () => setValue(value => value + 1);
+  };
+
+  const forceUpdate = useForceUpdate();
+
+  useEffect(() => {
+    setPlanBoxData(planBox);
+    forceUpdate(); // Force re-render when planBox changes
+  }, [planBox]);
+
+  return (
     <PlanBoxContainer>
-      <Title>2023년 02월 20일</Title>
-        <PlanItem></PlanItem>
-        <PlanItem></PlanItem>
-        <PlanItem></PlanItem>
-        <PlanItem></PlanItem>
+      <Title onClick={showTitleModal}>{planBoxData.planDate}</Title>
+      <Modal
+        isOpen={titleModalOpen}
+        style={customStyles}
+        ariaHideApp={false}
+        onRequestClose={closeTitleModal}
+      >
+        <ImgBtn onClick={closeTitleModal}>
+          <img src="images/close.png" alt="close" />
+        </ImgBtn>
+        <FormLine>
+          <Typo $size="1.1rem" $weight="bold" $margin="0 0 10px 0">
+            일정 수정, 삭제하기
+          </Typo>
+          <Typo $size="0.8rem" $margin="30px 0 0">
+            공개여부
+          </Typo>
+          <StyledInput
+            type="checkbox"
+            checked={isPrivate}
+            onChange={(e) => setIsPrivate(e.target.checked)}
+            $mt
+          />
+        </FormLine>
+        <ButtonWrapper>
+          <BlueBtn $margin="200px 0 0" onClick={deletePlanner}>
+            삭제
+          </BlueBtn>
+        </ButtonWrapper>
+      </Modal>
+      <PlanItem></PlanItem>
       <PlanAddBtn onClick={showModal}>일정 추가</PlanAddBtn>
       <Modal
         isOpen={modalOpen}
@@ -92,37 +157,37 @@ const PlanBoxListItem = () => {
         onRequestClose={closeModal}
       >
         <ImgBtn onClick={closeModal}>
-            <img src="images/close.png" alt="close" />
+          <img src="images/close.png" alt="close" />
         </ImgBtn>
         <FormLine>
           <Typo $size="1.1rem" $weight="bold" $margin="0 0 10px 0">
             일정 추가하기
           </Typo>
           <StyledInput
-              placeholder="제목을 입력해주세요"
-              $mt
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            <StyledInput
-              type='time'
-              placeholder="시간을 입력해주세요"
-              $mt
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
-            />
+            placeholder="제목을 입력해주세요"
+            $mt
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
           <StyledInput
-              placeholder="내용을 입력해주세요"
-              $mt
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-            />
-            <StyledInput
-              placeholder="장소를 입력해주세요"
-              $mt
-              value={address}
-              onChange={(e) => setAdderess(e.target.value)}
-            />
+            type='time'
+            placeholder="시간을 입력해주세요"
+            $mt
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+          />
+          <StyledInput
+            placeholder="내용을 입력해주세요"
+            $mt
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
+          <StyledInput
+            placeholder="장소를 입력해주세요"
+            $mt
+            value={address}
+            onChange={(e) => setAdderess(e.target.value)}
+          />
 
           <Typo $size="0.8rem" $margin="30px 0 0">
             공개여부
@@ -135,10 +200,10 @@ const PlanBoxListItem = () => {
           />
         </FormLine>
         <ButtonWrapper>
-            <BlueBtn $margin="200px 0 0">
-              생성
-            </BlueBtn>
-          </ButtonWrapper>
+          <BlueBtn $margin="200px 0 0" onClick={createPlan}>
+            생성
+          </BlueBtn>
+        </ButtonWrapper>
       </Modal>
     </PlanBoxContainer>
   );
