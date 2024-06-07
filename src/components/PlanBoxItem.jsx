@@ -42,7 +42,6 @@ const customStyles = {
 
 const PlanBoxItem = ({ clients, plannerId, data }) => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [isPrivate, setIsPrivate] = useState(false);
   const [date, setDate] = useState();
   const [planDate, setPlanDate] = useState();
   const [isShow, setIsShow] = useState(false);
@@ -78,7 +77,6 @@ const PlanBoxItem = ({ clients, plannerId, data }) => {
     try {
       const body = {
         planDate: planDate,
-        isPrivate: isPrivate,
       };
       console.log(planDate);
       client.current.publish({
@@ -172,15 +170,6 @@ const PlanBoxItem = ({ clients, plannerId, data }) => {
                 </StyledCalendarWrapper>
               )}
             </BirthWrap>
-            <Typo $size="0.8rem" $margin="30px 0 0">
-              공개여부
-            </Typo>
-            <StyledInput
-              type="checkbox"
-              checked={isPrivate}
-              onChange={(e) => setIsPrivate(e.target.checked)}
-              $mt
-            />
           </FormLine>
           <ButtonWrapper>
             <BlueBtn $margin="200px 0 0" onClick={addPlanBox}>
