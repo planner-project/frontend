@@ -17,7 +17,8 @@ const Wrapper = styled.div`
 `
 
 const Planner = () => {
-  const [planBoxdata, setPlanBoxdata] = useState([]); 
+  const [planBoxdata, setPlanBoxdata] = useState([]);
+  const [chatData, setChatData] = useState([]);
   const location = useLocation();
   const plannerId = location.state.plannerId;
   const token = sessionStorage.getItem("Authorization").split(" ")[1];
@@ -62,8 +63,12 @@ const Planner = () => {
     client.current.subscribe(subscriptionURL, (response) => {
       const messageObject = JSON.parse(response.body);
       console.log(messageObject);
-      setPlanBoxdata(messageObject["message"]);
-      console.log(planBoxdata);
+      if(messageObject["type"].includes("plan")) {
+        setPlanBoxdata(messageObject["message"]);
+      } else {
+        console.log(messageObject["message"])
+        setChatData(messageObject["message"]);
+      }
     });
   };
 
@@ -71,10 +76,10 @@ const Planner = () => {
     <>
       <SideBar />
       <MainWrapper>
-      <GroupMember></GroupMember>
+      <GroupMember plannerId={plannerId}></GroupMember>
       <Wrapper>
         <PlanBoxItem clients={client} plannerId={plannerId} data={planBoxdata} />
-        <Chat clients={client} />
+        <Chat clients={client} data={chatData} plannerId={plannerId} />
       </Wrapper>
       </MainWrapper>
     </>

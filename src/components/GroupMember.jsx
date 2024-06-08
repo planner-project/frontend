@@ -50,7 +50,7 @@ const Wrapper = styled.div`
   flex-direction: row;
 `
 
-const GroupMember = () => {
+const GroupMember = ({plannerId}) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [searchUser, setSearchUser] = useState({
     "userId": "",
@@ -112,7 +112,7 @@ const GroupMember = () => {
     const userId = {
       userId: searchUser.userId,
     }
-    axios.post(`http://localhost:8080/api/v1/users/${user.userId}/planners/1/group`, 
+    axios.post(`http://localhost:8080/api/v1/users/${user.userId}/planners/${plannerId}/group`, 
     userId, 
     config)
     .then(response => {
@@ -133,7 +133,7 @@ const GroupMember = () => {
     };
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/v1/users/${user.userId}/planners/1/group`,
+        `http://localhost:8080/api/v1/users/${user.userId}/planners/${plannerId}/group`,
         config
       );
       setMember(response.data);
