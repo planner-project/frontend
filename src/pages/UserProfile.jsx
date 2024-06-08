@@ -40,7 +40,7 @@ const InfoList = styled.li`
 
 const UserProfile = () => {
   const [isEdit, setIsEdit] = useState(false);
-  const { user } = useUserStore();
+  const { user, setUser } = useUserStore();
   const [formData, setFormData] = useState({
     image: "images/retriever.jpeg",
     nickname: "이승헌 #2341",
@@ -109,7 +109,7 @@ const UserProfile = () => {
                       </Typo>
                       <InputLine
                         name="birthdate"
-                        value={formData.birthdate}
+                        value={user.birthday}
                         onChange={handleInputChange}
                       />
                     </InfoList>
@@ -124,7 +124,7 @@ const UserProfile = () => {
                       <InputLine
                         type="password"
                         name="password"
-                        value={formData.email}
+                        value={user.email}
                         onChange={handleInputChange}
                       />
                     </InfoList>
@@ -138,7 +138,7 @@ const UserProfile = () => {
                       </Typo>
                       <InputLine
                         name="gender"
-                        value={formData.gender}
+                        value={user.gender}
                         onChange={handleInputChange}
                       />
                     </InfoList>
