@@ -9,6 +9,10 @@ const PlanContainer = styled.div`
   border: 1px black dashed;
   border-radius: 10px;
   margin-top: 14px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const Title = styled.h1`
@@ -17,10 +21,18 @@ const Title = styled.h1`
   font-size: 24px;
   font-family: 'Pretendard', serif;
   font-weight: bold;
+  margin-bottom: 10px;
 `;
 
+const Address = styled.p`
+  font-size: 18px;
+  font-family: 'Pretendard', serif;
+  font-weight: 600;
+  margin-bottom: 10px;
+`
+
 const Typo = styled.p`
-  font-size: 16px;
+  font-size: 18px;
   font-family: 'Pretendard', serif;
   font-weight: 700;
 `;
@@ -38,8 +50,8 @@ const PlanItem = ({ plans }) => {
   return (
     planData && planData.title ? (
       <PlanContainer>
-        <Typo>{planData.title}</Typo>
-        <Typo>{planData.address} {planData.time}</Typo>
+        <Title>{planData.title}</Title>
+        <Address>{planData.address} {planData.time}</Address>
         <Typo>{planData.content}</Typo>
       </PlanContainer>
     ) : null
