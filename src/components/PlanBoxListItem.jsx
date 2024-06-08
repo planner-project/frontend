@@ -1,12 +1,11 @@
+import { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import PlanItem from './PlanItem';
-import { Droppable } from 'react-beautiful-dnd';
-import { useEffect, useState } from 'react';
+import Modal from 'react-modal';
 import { ImgBtn, ButtonWrapper, BlueBtn } from './Button';
 import { FormLine } from './FormLine';
-import { StyledInput } from "../components/Form";
+import { StyledInput } from '../components/Form';
 import { Typo } from './Typo';
-import Modal from "react-modal";
 
 const PlanBoxContainer = styled.div`
   width: 341px;
@@ -32,9 +31,9 @@ const Title = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 14px;
-`
+`;
 const PlanAddBtn = styled.button`
-    width: 314px;
+  width: 314px;
   height: 78px;
   background-color: rgba(255, 255, 255, 0.4);
   border-radius: 10px;
@@ -47,19 +46,19 @@ const PlanAddBtn = styled.button`
 
 const customStyles = {
   content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    padding: "50px",
-    borderRadius: "10px",
-    transform: "translate(-50%, -50%)",
-    minWidth: "500px",
-    minHeight: "500px",
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    padding: '50px',
+    borderRadius: '10px',
+    transform: 'translate(-50%, -50%)',
+    minWidth: '500px',
+    minHeight: '500px',
   },
   overlay: {
-    zIndex: "10",
+    zIndex: '10',
   },
 };
 
@@ -67,26 +66,26 @@ const PlanBoxListItem = ({ planBox, clients, plannerId }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [titleModalOpen, setTitleModalOpen] = useState(false);
   const [isPrivate, setIsPrivate] = useState(false);
-  const [title, setTitle] = useState("");
-  const [time, setTime] = useState("");
-  const [content, setContent] = useState("");
-  const [address, setAdderess] = useState("");
+  const [title, setTitle] = useState('');
+  const [time, setTime] = useState('');
+  const [content, setContent] = useState('');
+  const [address, setAddress] = useState('');
   const [planBoxData, setPlanBoxData] = useState(planBox || {});
   const [isShow, setIsShow] = useState(false);
   const client = clients;
 
   const showModal = () => {
     setModalOpen(true);
-  }
+  };
   const closeModal = () => {
     setModalOpen(false);
-  }
+  };
   const showTitleModal = () => {
     setTitleModalOpen(true);
-  }
+  };
   const closeTitleModal = () => {
     setTitleModalOpen(false);
-  }
+  };
 
   const deletePlanner = () => {
     try {
@@ -100,20 +99,27 @@ const PlanBoxListItem = ({ planBox, clients, plannerId }) => {
   };
 
   const createPlan = () => {
-    // 일정 생성 로직 추가
+    try {
+      const body = {
+        isPrivate,
+        title,
+        time,
+        content,
+        address,
+      };
+      client.current.publish({
+        destination: `/pub/planner/${plannerId}/planBox/${planBoxData.planBoxId}/create`,
+        body: JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json' },
+      });
+      setModalOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
-
-  // Force Update hook
-  const useForceUpdate = () => {
-    const [value, setValue] = useState(0);
-    return () => setValue(value => value + 1);
-  };
-
-  const forceUpdate = useForceUpdate();
 
   useEffect(() => {
     setPlanBoxData(planBox);
-    forceUpdate(); // Force re-render when planBox changes
   }, [planBox]);
 
   return (
@@ -148,7 +154,12 @@ const PlanBoxListItem = ({ planBox, clients, plannerId }) => {
           </BlueBtn>
         </ButtonWrapper>
       </Modal>
-      <PlanItem></PlanItem>
+      {planBoxData.planResponses &&
+        planBoxData.planResponses.map((el) => (
+          el && el.title !== undefined && (
+            <PlanItem key={el.planId} plans={el} />
+          )
+        ))}
       <PlanAddBtn onClick={showModal}>일정 추가</PlanAddBtn>
       <Modal
         isOpen={modalOpen}
@@ -170,7 +181,7 @@ const PlanBoxListItem = ({ planBox, clients, plannerId }) => {
             onChange={(e) => setTitle(e.target.value)}
           />
           <StyledInput
-            type='time'
+            type="time"
             placeholder="시간을 입력해주세요"
             $mt
             value={time}
@@ -186,9 +197,8 @@ const PlanBoxListItem = ({ planBox, clients, plannerId }) => {
             placeholder="장소를 입력해주세요"
             $mt
             value={address}
-            onChange={(e) => setAdderess(e.target.value)}
+            onChange={(e) => setAddress(e.target.value)}
           />
-
           <Typo $size="0.8rem" $margin="30px 0 0">
             공개여부
           </Typo>
@@ -207,6 +217,6 @@ const PlanBoxListItem = ({ planBox, clients, plannerId }) => {
       </Modal>
     </PlanBoxContainer>
   );
-}
+};
 
 export default PlanBoxListItem;

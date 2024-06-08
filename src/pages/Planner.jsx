@@ -54,12 +54,8 @@ const Planner = () => {
     client.current.subscribe(subscriptionURL, (response) => {
       const messageObject = JSON.parse(response.body);
       console.log(messageObject);
-      if(messageObject["type"] === "create-planBox") {
-        return setPlanBoxdata(messageObject["message"]);
-      }
-      if(messageObject["type"] === "delete-planBox") {
-        return setPlanBoxdata(messageObject["message"]);
-      }
+      setPlanBoxdata(messageObject["message"]);
+      console.log(planBoxdata);
     });
   };
 
