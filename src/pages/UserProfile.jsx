@@ -5,6 +5,7 @@ import { Typo } from "../components/Typo";
 import { BlueBtn, ButtonWrapper, GrayBtn } from "../components/Button";
 import { FormLine, InputLine } from "../components/FormLine";
 import { useState } from "react";
+import useUserStore from "../store";
 
 const ProfileWrap = styled.div`
   padding: 50px;
@@ -39,6 +40,7 @@ const InfoList = styled.li`
 
 const UserProfile = () => {
   const [isEdit, setIsEdit] = useState(false);
+  const { user, setUser } = useUserStore();
   const [formData, setFormData] = useState({
     image: "images/retriever.jpeg",
     nickname: "이승헌 #2341",
@@ -93,7 +95,7 @@ const UserProfile = () => {
                       </Typo>
                       <InputLine
                         name="nickname"
-                        value={formData.nickname}
+                        value={`${user.nickname} #${user.userTag}`}
                         onChange={handleInputChange}
                       />
                     </InfoList>
@@ -107,7 +109,7 @@ const UserProfile = () => {
                       </Typo>
                       <InputLine
                         name="birthdate"
-                        value={formData.birthdate}
+                        value={user.birthday}
                         onChange={handleInputChange}
                       />
                     </InfoList>
@@ -117,11 +119,12 @@ const UserProfile = () => {
                         $color="#878787"
                         $margin="0 0 10px 0"
                       >
-                        이메일
+                        비밀번호
                       </Typo>
                       <InputLine
-                        name="email"
-                        value={formData.email}
+                        type="password"
+                        name="password"
+                        value={user.email}
                         onChange={handleInputChange}
                       />
                     </InfoList>
@@ -135,7 +138,7 @@ const UserProfile = () => {
                       </Typo>
                       <InputLine
                         name="gender"
-                        value={formData.gender}
+                        value={user.gender}
                         onChange={handleInputChange}
                       />
                     </InfoList>
@@ -150,14 +153,14 @@ const UserProfile = () => {
           ) : (
             <>
               <InfoWrap>
-                <ImageProfile src={formData.image} alt="profile" />
+                <ImageProfile src={user.profileImgUrl} alt="profile" />
                 <Info>
                   <InfoList>
                     <Typo $size="0.8rem" $color="#878787" $margin="0 0 10px 0">
                       닉네임
                     </Typo>
                     <Typo $size="1.2rem" $weight="bold">
-                      {formData.nickname}
+                      {user.nickname} #{user.userTag}
                     </Typo>
                   </InfoList>
                   <InfoList>
@@ -165,7 +168,7 @@ const UserProfile = () => {
                       생년월일
                     </Typo>
                     <Typo $size="1.2rem" $weight="bold">
-                      {formData.birthdate}
+                      {user.birthday}
                     </Typo>
                   </InfoList>
                   <InfoList>
@@ -173,7 +176,7 @@ const UserProfile = () => {
                       이메일
                     </Typo>
                     <Typo $size="1.2rem" $weight="bold">
-                      {formData.email}
+                      {user.email}
                     </Typo>
                   </InfoList>
                   <InfoList>
@@ -181,7 +184,7 @@ const UserProfile = () => {
                       성별
                     </Typo>
                     <Typo $size="1.2rem" $weight="bold">
-                      {formData.gender}
+                      {user.gender}
                     </Typo>
                   </InfoList>
                 </Info>
