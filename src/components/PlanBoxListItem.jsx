@@ -157,7 +157,12 @@ const PlanBoxListItem = ({ planBox, clients, plannerId }) => {
       {planBoxData.planResponses &&
         planBoxData.planResponses.map((el) => (
           el && el.title !== undefined && (
-            <PlanItem key={el.planId} plans={el} />
+            <PlanItem 
+            key={el.planId} 
+            planBoxId={planBoxData.planBoxId}
+            plans={el} 
+            clients={client}
+            plannerId={plannerId}/>
           )
         ))}
       <PlanAddBtn onClick={showModal}>일정 추가</PlanAddBtn>
