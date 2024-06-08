@@ -11,8 +11,7 @@ const ChatButton = styled.div`
   width: 85px;
   height: 85px;
   border-radius: 85px;
-  background-color: #1570EF;
-  margin-top: 590px;
+  background-color: rgb(21, 112, 239);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,7 +22,6 @@ const ChatContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: end;
-  margin-left: 55vw;
   overflow-y: hidden;
 `;
 
