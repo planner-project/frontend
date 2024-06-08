@@ -1,4 +1,5 @@
 import SideBar from "../components/SideBar";
+import { styled } from 'styled-components';
 import GroupMember from "../components/GroupMember";
 import Chat from "../components/Chat";
 import { MainWrapper } from "../components/MainWrap";
@@ -7,6 +8,13 @@ import { useEffect, useRef, useState } from "react";
 import SockJS from "sockjs-client";
 import { Client } from '@stomp/stompjs';
 import PlanBoxItem from "../components/PlanBoxItem";
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  margin-top: 100px;
+`
 
 const Planner = () => {
   const [planBoxdata, setPlanBoxdata] = useState([]); 
@@ -63,8 +71,11 @@ const Planner = () => {
     <>
       <SideBar />
       <MainWrapper>
+      <GroupMember></GroupMember>
+      <Wrapper>
         <PlanBoxItem clients={client} plannerId={plannerId} data={planBoxdata} />
         <Chat clients={client} />
+      </Wrapper>
       </MainWrapper>
     </>
   );
