@@ -1,4 +1,5 @@
 import SideBar from "../components/SideBar";
+import { styled } from 'styled-components';
 import GroupMember from "../components/GroupMember";
 import Chat from "../components/Chat";
 import { MainWrapper } from "../components/MainWrap";
@@ -8,8 +9,16 @@ import SockJS from "sockjs-client";
 import { Client } from '@stomp/stompjs';
 import PlanBoxItem from "../components/PlanBoxItem";
 
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  margin-top: 100px;
+`
+
 const Planner = () => {
-  const [planBoxdata, setPlanBoxdata] = useState([]); 
+  const [planBoxdata, setPlanBoxdata] = useState([]);
+  const [chatData, setChatData] = useState([]);
   const location = useLocation();
   const plannerId = location.state.plannerId;
   const token = sessionStorage.getItem("Authorization").split(" ")[1];
@@ -54,8 +63,12 @@ const Planner = () => {
     client.current.subscribe(subscriptionURL, (response) => {
       const messageObject = JSON.parse(response.body);
       console.log(messageObject);
-      setPlanBoxdata(messageObject["message"]);
-      console.log(planBoxdata);
+      if(messageObject["type"].includes("plan")) {
+        setPlanBoxdata(messageObject["message"]);
+      } else {
+        console.log(messageObject["message"])
+        setChatData(messageObject["message"]);
+      }
     });
   };
 
@@ -63,8 +76,11 @@ const Planner = () => {
     <>
       <SideBar />
       <MainWrapper>
+      <GroupMember plannerId={plannerId}></GroupMember>
+      <Wrapper>
         <PlanBoxItem clients={client} plannerId={plannerId} data={planBoxdata} />
-        <Chat clients={client} />
+        <Chat clients={client} data={chatData} plannerId={plannerId} />
+      </Wrapper>
       </MainWrapper>
     </>
   );

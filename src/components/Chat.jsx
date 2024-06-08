@@ -1,8 +1,6 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Modal from "react-modal";
 import styled, { css } from 'styled-components';
-import SockJS from 'sockjs-client';
-import { Client } from '@stomp/stompjs';
 import { StyledInput } from './Form';
 import useUserStore from '../store';
 import { Typo } from './Typo';
@@ -11,8 +9,7 @@ const ChatButton = styled.div`
   width: 85px;
   height: 85px;
   border-radius: 85px;
-  background-color: #1570EF;
-  margin-top: 590px;
+  background-color: rgb(21, 112, 239);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,7 +20,6 @@ const ChatContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: end;
-  margin-left: 55vw;
   overflow-y: hidden;
 `;
 
@@ -79,10 +75,10 @@ const Message = styled.p`
   font-size: 9px;
 `;
 
-const Chat = ({clients}) => {
+const Chat = ({clients, data, plannerId}) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [messageContent, setMessageContent] = useState('');
-  const [messages, setMessage] = useState([]);
+  const [messages, setMessages] = useState([]);
   const client = clients;
   const { user } = useUserStore();
 
@@ -94,6 +90,14 @@ const Chat = ({clients}) => {
     setModalOpen(false);
   };
 
+  useEffect(() => {
+    const object = {
+      ...data,
+      isMe: data.userId === user.userId,
+    };
+    setMessages((prevMessages) => [...prevMessages, object]);
+  }, [data]);
+  
   const publish = () => {
     try {
       const message = {
@@ -103,7 +107,7 @@ const Chat = ({clients}) => {
         message: messageContent,
       };
       client.current.publish({
-        destination: "/pub/planner/1/chat/send",
+        destination: `/pub/planner/${plannerId}/chat/send`,
         body: JSON.stringify(message),
       });
     } catch (error) {
@@ -130,11 +134,11 @@ const Chat = ({clients}) => {
         onRequestClose={closeModal}
       >
         <MessageContainer>
-        {messages.map((user, index) => (
-          <MessageWrapper key={index} $align={user.isMe ? "end" : "start"}>
-            <Typo>{user.message.nickname}</Typo>
-            <UserMessageContainer $backgroundColor={user.isMe ? "blue" : "gray"}>
-              <Message>{user.message.message}</Message>
+        {messages.length > 0 && messages.map((message, index) => (
+          <MessageWrapper key={index} $align={message.isMe ? "end" : "start"}>
+            <Typo>{message.nickname}</Typo>
+            <UserMessageContainer $backgroundColor={message.isMe ? "blue" : "gray"}>
+              <Message>{message.message}</Message>
             </UserMessageContainer>
           </MessageWrapper>
         ))}
