@@ -112,6 +112,7 @@ const PlanBoxListItem = ({ planBox, clients, plannerId }) => {
         body: JSON.stringify(body),
         headers: { 'Content-Type': 'application/json' },
       });
+      setModalOpen(false);
     } catch (error) {
       console.log(error);
     }
