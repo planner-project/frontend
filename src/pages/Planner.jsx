@@ -65,8 +65,8 @@ const Planner = () => {
       console.log(messageObject);
       if(messageObject["type"].includes("plan")) {
         setPlanBoxdata(messageObject["message"]);
-      } else {
-        console.log(messageObject["message"])
+      }
+      if(messageObject["type"] === "chat") {
         setChatData(messageObject["message"]);
       }
     });

@@ -6,7 +6,6 @@ import PlannerList from "./pages/PlannerList";
 import DashBoard from "./pages/DashBoard";
 import UserProfile from "./pages/UserProfile";
 import Planner from "./pages/Planner";
-import ModalTest from "./pages/ModalTest";
 
 function App() {
   return (
@@ -19,7 +18,6 @@ function App() {
         <Route path="/p_list" element={<PlannerList />} />
         <Route path="/user_profile" element={<UserProfile />} />
         <Route path="/planner" element={<Planner />} />
-        <Route path="/test" element={<ModalTest />} />
       </Routes>
     </>
   );
