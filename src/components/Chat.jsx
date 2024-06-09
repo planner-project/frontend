@@ -91,11 +91,15 @@ const Chat = ({clients, data, plannerId}) => {
   };
 
   useEffect(() => {
-    const object = {
-      ...data,
-      isMe: data.userId === user.userId,
-    };
-    setMessages((prevMessages) => [...prevMessages, object]);
+    if (data) {
+      let object = {
+        ...data,
+        isMe: data.userId && data.userId === user.userId,
+      };
+      if (!Object.values(object).includes(undefined)) {
+        setMessages((prevMessages) => [...prevMessages, object]);
+      }
+    }
   }, [data]);
   
   const publish = () => {
@@ -111,7 +115,6 @@ const Chat = ({clients, data, plannerId}) => {
         body: JSON.stringify(message),
       });
     } catch (error) {
-      console.log(user);
       console.log(error);
     }
   };
