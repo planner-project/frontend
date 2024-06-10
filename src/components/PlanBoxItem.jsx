@@ -53,7 +53,8 @@ const PlanBoxItem = ({ clients, plannerId, data }) => {
   const showModal = () => {
     setModalOpen(true);
   };
-  const closeModal = () => {
+  const closeModal = (e) => {
+    e.stopPropagation();
     setModalOpen(false);
   };
   const handleOnClick = () => {
@@ -84,7 +85,7 @@ const PlanBoxItem = ({ clients, plannerId, data }) => {
         body: JSON.stringify(body),
         headers: { 'Content-Type': 'application/json' },
       });
-
+      setModalOpen(false);
       // 새로운 계획 상자를 추가한 후 업데이트된 계획 데이터를 가져옵니다.
       await getPlan();
     } catch (error) {
