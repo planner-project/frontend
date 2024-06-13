@@ -31,7 +31,7 @@ const Planner = () => {
       debug: (str) => console.log(str),
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
-      heartbeatOutgoing: 4000, // Corrected spelling from heartbeatOutcoming
+      heartbeatOutgoing: 4000,
     });
 
     client.current.onConnect = () => {
@@ -62,7 +62,7 @@ const Planner = () => {
 
     client.current.subscribe(subscriptionURL, (response) => {
       const messageObject = JSON.parse(response.body);
-      console.log(messageObject);
+
       if(messageObject["type"].includes("plan")) {
         setPlanBoxdata(messageObject["message"]);
       }
