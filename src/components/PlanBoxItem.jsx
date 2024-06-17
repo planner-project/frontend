@@ -9,7 +9,6 @@ import {
   StyledCalendarWrapper,
   StyledCalendar,
 } from "../components/Calendar.jsx";
-import { DragDropContext } from 'react-beautiful-dnd';
 import PlanBoxListItem from './PlanBoxListItem.jsx';
 import useUserStore from '../store.jsx';
 import axios from 'axios';
@@ -72,14 +71,12 @@ const PlanBoxItem = ({ clients, plannerId, data }) => {
     setPlanDate(`${year}-${month}-${day}`);
   };
 
-  const onDragEnd = () => { console.log("g") };
-
   const addPlanBox = async () => {
     try {
       const body = {
         planDate: planDate,
       };
-      console.log(planDate);
+
       client.current.publish({
         destination: `/pub/planner/${plannerId}/create`,
         body: JSON.stringify(body),
@@ -105,7 +102,6 @@ const PlanBoxItem = ({ clients, plannerId, data }) => {
         config
       );
       setPlan(response.data.planBoxResponses);
-      console.log(response.data.planBoxResponses);
     } catch (error) {
       console.log(error);
     }
@@ -117,24 +113,18 @@ const PlanBoxItem = ({ clients, plannerId, data }) => {
   
   useEffect(() => {
     if (data) {
-      // 여기서 data의 값이 유효한지 확인합니다.
-      console.log(data); // data의 값을 확인하기 위한 로그
-      setPlan(data); // plan 상태를 업데이트합니다.
+      setPlan(data);
     }
   }, [data]);
   
   useEffect(() => {
-    // 업데이트된 plan 값을 확인합니다.
-    console.log(plan);
     setPlan(plan)
   }, [plan]);
   return (
     <PlanBoxContainer>
-      <DragDropContext onDragEnd={onDragEnd}>
       {plan && plan.map((el) => (
-        console.log(plan),
         <PlanBoxListItem
-          key={el.planBoxId} // 고유한 key 설정
+          key={el.planBoxId}
           planBox={el}
           clients={client}
           plannerId={plannerId}
@@ -178,7 +168,6 @@ const PlanBoxItem = ({ clients, plannerId, data }) => {
             </BlueBtn>
           </ButtonWrapper>
         </Modal>
-      </DragDropContext>
     </PlanBoxContainer>
   );
 };

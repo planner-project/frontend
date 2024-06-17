@@ -41,7 +41,7 @@ const Signup = () => {
     setIsSelect(true);
 
     const year = value.getFullYear();
-    const month = value.getMonth() + 1; // 월은 0부터 시작하므로 1을 더합니다.
+    const month = value.getMonth() + 1;
     const day = value.getDate();
 
     setUserData((prevUserData) => ({

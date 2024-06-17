@@ -82,7 +82,7 @@ const PlannerList = () => {
         plan,
         config
       );
-      console.log(response);
+
       setModalOpen(false);
       fetchPlans();
     } catch (error) {
