@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import axios from "axios";
 import { MainWrapper } from "../components/MainWrap";
 import SideBar from "../components/SideBar";
 import { Typo } from "../components/Typo";
@@ -6,6 +7,7 @@ import { BlueBtn, ButtonWrapper, GrayBtn } from "../components/Button";
 import { FormLine, InputLine } from "../components/FormLine";
 import { useState } from "react";
 import useUserStore from "../store";
+import { useNavigate } from "react-router-dom";
 
 const ProfileWrap = styled.div`
   padding: 50px;
@@ -39,6 +41,7 @@ const InfoList = styled.li`
 `;
 
 const UserProfile = () => {
+  const navigate = useNavigate();
   const [isEdit, setIsEdit] = useState(false);
   const { user, setUser } = useUserStore();
   const [formData, setFormData] = useState({
@@ -71,6 +74,21 @@ const UserProfile = () => {
       [name]: value,
     }));
   };
+
+  const deleteUser = () => {
+    const token = sessionStorage.getItem("Authorization");
+
+    axios.delete("http://localhost:8080/api/v1/users", {
+      headers: {
+        Authorization: token,
+      }
+    }).then((response) => {
+      if(response.status === 200) {
+        sessionStorage.removeItem("Authorization");
+        navigate("/login");
+      }
+    })
+  }
   return (
     <div>
       <SideBar />
@@ -191,7 +209,7 @@ const UserProfile = () => {
               </InfoWrap>
               <ButtonWrapper $margin="50px 0 0" $gap="10px">
                 <BlueBtn onClick={changeEdit}>내 정보수정</BlueBtn>
-                <GrayBtn>회원 탈퇴</GrayBtn>
+                <GrayBtn onClick={deleteUser}>회원 탈퇴</GrayBtn>
               </ButtonWrapper>
             </>
           )}
