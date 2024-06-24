@@ -11,6 +11,7 @@ import { Typo } from "../components/Typo";
 import { FormLine } from "../components/FormLine";
 import { StyledInput } from "../components/Form";
 import useUserStore from "../store";
+import refreshToken from "../refreshToken";
 
 const PlanListWrap = styled.div`
   display: grid;
@@ -60,9 +61,13 @@ const PlannerList = () => {
       const response = await axios.get(
         `http://localhost:8080/api/v1/users/${user.userId}/planners`,
         config
-      );
+      )
       setPlans(response.data);
     } catch (error) {
+      const refreshError = error.response.data.split("\n")[0].includes("TOKEN_01");
+      if(refreshError) {
+        refreshToken();
+      }
       console.error(error);
     }
   };
