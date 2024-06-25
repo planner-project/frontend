@@ -1,12 +1,10 @@
-import SideBar from "../components/SideBar";
-import { styled } from 'styled-components';
+import { styled } from "styled-components";
 import GroupMember from "../components/GroupMember";
 import Chat from "../components/Chat";
-import { MainWrapper } from "../components/MainWrap";
 import { useLocation } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import SockJS from "sockjs-client";
-import { Client } from '@stomp/stompjs';
+import { Client } from "@stomp/stompjs";
 import PlanBoxItem from "../components/PlanBoxItem";
 
 const Wrapper = styled.div`
@@ -14,7 +12,7 @@ const Wrapper = styled.div`
   flex-direction: row;
   align-items: end;
   margin-top: 100px;
-`
+`;
 
 const Planner = () => {
   const [planBoxdata, setPlanBoxdata] = useState([]);
@@ -44,17 +42,17 @@ const Planner = () => {
     };
 
     client.current.onStompError = (frame) => {
-      console.error('Broker reported error: ' + frame.headers['message']);
-      console.error('Additional details: ' + frame.body);
+      console.error("Broker reported error: " + frame.headers["message"]);
+      console.error("Additional details: " + frame.body);
     };
 
     client.current.activate();
 
     return () => {
-      if(client.current) {
+      if (client.current) {
         client.current.deactivate();
       }
-    }
+    };
   }, [socketURL]);
 
   const subscribe = () => {
@@ -63,10 +61,10 @@ const Planner = () => {
     client.current.subscribe(subscriptionURL, (response) => {
       const messageObject = JSON.parse(response.body);
 
-      if(messageObject["type"].includes("plan")) {
+      if (messageObject["type"].includes("plan")) {
         setPlanBoxdata(messageObject["message"]);
       }
-      if(messageObject["type"] === "chat") {
+      if (messageObject["type"] === "chat") {
         setChatData(messageObject["message"]);
       }
     });
@@ -74,17 +72,17 @@ const Planner = () => {
 
   return (
     <>
-      <SideBar />
-      <MainWrapper>
       <GroupMember plannerId={plannerId}></GroupMember>
       <Wrapper>
-        <PlanBoxItem clients={client} plannerId={plannerId} data={planBoxdata} />
+        <PlanBoxItem
+          clients={client}
+          plannerId={plannerId}
+          data={planBoxdata}
+        />
         <Chat clients={client} data={chatData} plannerId={plannerId} />
       </Wrapper>
-      </MainWrapper>
     </>
   );
-}
+};
 
 export default Planner;
-
