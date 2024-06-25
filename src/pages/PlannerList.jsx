@@ -1,6 +1,4 @@
 import Ad from "../components/Ad";
-import { MainWrapper } from "../components/MainWrap";
-import SideBar from "../components/SideBar";
 import { BlueBtn, ButtonWrapper, ImgBtn } from "../components/Button";
 import PlanListItem from "../components/PlanListItem";
 import styled from "styled-components";
@@ -91,61 +89,58 @@ const PlannerList = () => {
   };
   return (
     <div>
-      <SideBar />
-      <MainWrapper>
-        <Ad />
+      <Ad />
+      <ButtonWrapper>
+        <BlueBtn $margin="30px 0" onClick={showModal}>
+          플랜 추가하기
+        </BlueBtn>
+      </ButtonWrapper>
+      <PlanListWrap>
+        {plans.map((plan) => (
+          <PlanListItem
+            key={plan.plannerId}
+            plan={plan}
+            groupMember={plan.profileImages}
+            fetchPlans={fetchPlans}
+          />
+        ))}
+      </PlanListWrap>
+      <Modal
+        isOpen={modalOpen}
+        style={customStyles}
+        ariaHideApp={false}
+        onRequestClose={closeModal}
+      >
+        <ImgBtn onClick={closeModal}>
+          <img src="images/close.png" alt="close" />
+        </ImgBtn>
+        <FormLine>
+          <Typo $size="1.1rem" $weight="bold">
+            플랜생성하기
+          </Typo>
+          <StyledInput
+            placeholder="제목을 입력해주세요"
+            $mt
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <Typo $size="0.8rem" $margin="30px 0 0">
+            공개여부
+          </Typo>
+          <StyledInput
+            type="checkbox"
+            checked={isPrivate}
+            onChange={(e) => setIsPrivate(e.target.checked)}
+            $mt
+          />
+        </FormLine>
+
         <ButtonWrapper>
-          <BlueBtn $margin="30px 0" onClick={showModal}>
-            플랜 추가하기
+          <BlueBtn $margin="20px 0 0" onClick={postPlanner}>
+            생성
           </BlueBtn>
         </ButtonWrapper>
-        <PlanListWrap>
-          {plans.map((plan) => (
-            <PlanListItem
-              key={plan.plannerId}
-              plan={plan}
-              groupMember={plan.profileImages}
-              fetchPlans={fetchPlans}
-            />
-          ))}
-        </PlanListWrap>
-        <Modal
-          isOpen={modalOpen}
-          style={customStyles}
-          ariaHideApp={false}
-          onRequestClose={closeModal}
-        >
-          <ImgBtn onClick={closeModal}>
-            <img src="images/close.png" alt="close" />
-          </ImgBtn>
-          <FormLine>
-            <Typo $size="1.1rem" $weight="bold">
-              플랜생성하기
-            </Typo>
-            <StyledInput
-              placeholder="제목을 입력해주세요"
-              $mt
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            <Typo $size="0.8rem" $margin="30px 0 0">
-              공개여부
-            </Typo>
-            <StyledInput
-              type="checkbox"
-              checked={isPrivate}
-              onChange={(e) => setIsPrivate(e.target.checked)}
-              $mt
-            />
-          </FormLine>
-
-          <ButtonWrapper>
-            <BlueBtn $margin="20px 0 0" onClick={postPlanner}>
-              생성
-            </BlueBtn>
-          </ButtonWrapper>
-        </Modal>
-      </MainWrapper>
+      </Modal>
     </div>
   );
 };

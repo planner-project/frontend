@@ -1,7 +1,5 @@
 import styled from "styled-components";
 import axios from "axios";
-import { MainWrapper } from "../components/MainWrap";
-import SideBar from "../components/SideBar";
 import { Typo } from "../components/Typo";
 import { BlueBtn, ButtonWrapper, GrayBtn } from "../components/Button";
 import { FormLine, InputLine } from "../components/FormLine";
@@ -78,143 +76,126 @@ const UserProfile = () => {
   const deleteUser = () => {
     const token = sessionStorage.getItem("Authorization");
 
-    axios.delete("http://localhost:8080/api/v1/users", {
-      headers: {
-        Authorization: token,
-      }
-    }).then((response) => {
-      if(response.status === 200) {
-        sessionStorage.removeItem("Authorization");
-        navigate("/login");
-      }
-    })
-  }
+    axios
+      .delete("http://localhost:8080/api/v1/users", {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          sessionStorage.removeItem("Authorization");
+          navigate("/login");
+        }
+      });
+  };
   return (
     <div>
-      <SideBar />
-      <MainWrapper>
-        <ProfileWrap>
-          {isEdit ? (
-            <>
-              <FormLine>
-                <InfoWrap>
-                  <ImageWrap>
-                    <ImageProfile src={formData.image} alt="profile" />
-                    <InputLine type="file" onChange={handleImageChange} />
-                  </ImageWrap>
-                  <Info>
-                    <InfoList>
-                      <Typo
-                        $size="0.8rem"
-                        $color="#878787"
-                        $margin="0 0 10px 0"
-                      >
-                        닉네임
-                      </Typo>
-                      <InputLine
-                        name="nickname"
-                        value={`${user.nickname} #${user.userTag}`}
-                        onChange={handleInputChange}
-                      />
-                    </InfoList>
-                    <InfoList>
-                      <Typo
-                        $size="0.8rem"
-                        $color="#878787"
-                        $margin="0 0 10px 0"
-                      >
-                        생년월일
-                      </Typo>
-                      <InputLine
-                        name="birthdate"
-                        value={user.birthday}
-                        onChange={handleInputChange}
-                      />
-                    </InfoList>
-                    <InfoList>
-                      <Typo
-                        $size="0.8rem"
-                        $color="#878787"
-                        $margin="0 0 10px 0"
-                      >
-                        비밀번호
-                      </Typo>
-                      <InputLine
-                        type="password"
-                        name="password"
-                        value={user.email}
-                        onChange={handleInputChange}
-                      />
-                    </InfoList>
-                    <InfoList>
-                      <Typo
-                        $size="0.8rem"
-                        $color="#878787"
-                        $margin="0 0 10px 0"
-                      >
-                        성별
-                      </Typo>
-                      <InputLine
-                        name="gender"
-                        value={user.gender}
-                        onChange={handleInputChange}
-                      />
-                    </InfoList>
-                  </Info>
-                </InfoWrap>
-                <ButtonWrapper $margin="50px 0 0" $gap="10px">
-                  <BlueBtn onClick={changeEdit}>수정 완료</BlueBtn>
-                  <GrayBtn onClick={changeEdit}>돌아가기</GrayBtn>
-                </ButtonWrapper>
-              </FormLine>
-            </>
-          ) : (
-            <>
+      <ProfileWrap>
+        {isEdit ? (
+          <>
+            <FormLine>
               <InfoWrap>
-                <ImageProfile src={user.profileImgUrl} alt="profile" />
+                <ImageWrap>
+                  <ImageProfile src={formData.image} alt="profile" />
+                  <InputLine type="file" onChange={handleImageChange} />
+                </ImageWrap>
                 <Info>
                   <InfoList>
                     <Typo $size="0.8rem" $color="#878787" $margin="0 0 10px 0">
                       닉네임
                     </Typo>
-                    <Typo $size="1.2rem" $weight="bold">
-                      {user.nickname} #{user.userTag}
-                    </Typo>
+                    <InputLine
+                      name="nickname"
+                      value={`${user.nickname} #${user.userTag}`}
+                      onChange={handleInputChange}
+                    />
                   </InfoList>
                   <InfoList>
                     <Typo $size="0.8rem" $color="#878787" $margin="0 0 10px 0">
                       생년월일
                     </Typo>
-                    <Typo $size="1.2rem" $weight="bold">
-                      {user.birthday}
-                    </Typo>
+                    <InputLine
+                      name="birthdate"
+                      value={user.birthday}
+                      onChange={handleInputChange}
+                    />
                   </InfoList>
                   <InfoList>
                     <Typo $size="0.8rem" $color="#878787" $margin="0 0 10px 0">
-                      이메일
+                      비밀번호
                     </Typo>
-                    <Typo $size="1.2rem" $weight="bold">
-                      {user.email}
-                    </Typo>
+                    <InputLine
+                      type="password"
+                      name="password"
+                      value={user.email}
+                      onChange={handleInputChange}
+                    />
                   </InfoList>
                   <InfoList>
                     <Typo $size="0.8rem" $color="#878787" $margin="0 0 10px 0">
                       성별
                     </Typo>
-                    <Typo $size="1.2rem" $weight="bold">
-                      {user.gender}
-                    </Typo>
+                    <InputLine
+                      name="gender"
+                      value={user.gender}
+                      onChange={handleInputChange}
+                    />
                   </InfoList>
                 </Info>
               </InfoWrap>
               <ButtonWrapper $margin="50px 0 0" $gap="10px">
-                <BlueBtn onClick={changeEdit}>내 정보수정</BlueBtn>
-                <GrayBtn onClick={deleteUser}>회원 탈퇴</GrayBtn>
+                <BlueBtn onClick={changeEdit}>수정 완료</BlueBtn>
+                <GrayBtn onClick={changeEdit}>돌아가기</GrayBtn>
               </ButtonWrapper>
-            </>
-          )}
-        </ProfileWrap>
-      </MainWrapper>
+            </FormLine>
+          </>
+        ) : (
+          <>
+            <InfoWrap>
+              <ImageProfile src={user.profileImgUrl} alt="profile" />
+              <Info>
+                <InfoList>
+                  <Typo $size="0.8rem" $color="#878787" $margin="0 0 10px 0">
+                    닉네임
+                  </Typo>
+                  <Typo $size="1.2rem" $weight="bold">
+                    {user.nickname} #{user.userTag}
+                  </Typo>
+                </InfoList>
+                <InfoList>
+                  <Typo $size="0.8rem" $color="#878787" $margin="0 0 10px 0">
+                    생년월일
+                  </Typo>
+                  <Typo $size="1.2rem" $weight="bold">
+                    {user.birthday}
+                  </Typo>
+                </InfoList>
+                <InfoList>
+                  <Typo $size="0.8rem" $color="#878787" $margin="0 0 10px 0">
+                    이메일
+                  </Typo>
+                  <Typo $size="1.2rem" $weight="bold">
+                    {user.email}
+                  </Typo>
+                </InfoList>
+                <InfoList>
+                  <Typo $size="0.8rem" $color="#878787" $margin="0 0 10px 0">
+                    성별
+                  </Typo>
+                  <Typo $size="1.2rem" $weight="bold">
+                    {user.gender}
+                  </Typo>
+                </InfoList>
+              </Info>
+            </InfoWrap>
+            <ButtonWrapper $margin="50px 0 0" $gap="10px">
+              <BlueBtn onClick={changeEdit}>내 정보수정</BlueBtn>
+              <GrayBtn onClick={deleteUser}>회원 탈퇴</GrayBtn>
+            </ButtonWrapper>
+          </>
+        )}
+      </ProfileWrap>
     </div>
   );
 };

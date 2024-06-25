@@ -1,4 +1,4 @@
-import { useState } from "react";
+import PropTypes from "prop-types";
 import { styled } from "styled-components";
 import SideBar_Account from "./SideBar_Account";
 import SideBar_Menu from "./SideBar_Menu";
@@ -14,7 +14,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   position: fixed;
-  transition: left 0.5s ease;
+  transition: 0.5s ease;
   left: ${(props) => (props.$isopen ? "0" : "-310px")};
 `;
 
@@ -54,24 +54,24 @@ const ToggleBtn = styled.div`
   }
 `;
 
-function SideBar() {
-  const [isOpen, setIsOpen] = useState(true);
-
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+function SideBar({ isopen, togglemenu }) {
   return (
-    <Container $isopen={isOpen}>
+    <Container $isopen={isopen}>
       <LogoContainer>
         <Logo></Logo>
       </LogoContainer>
       <SideBar_Account></SideBar_Account>
       <SideBar_Menu></SideBar_Menu>
-      <ToggleBtn $isopen={isOpen} onClick={toggleMenu}>
+      <ToggleBtn $isopen={isopen} onClick={togglemenu}>
         <img src="images/left.png" alt="navButton" />
       </ToggleBtn>
     </Container>
   );
 }
+
+SideBar.propTypes = {
+  isopen: PropTypes.bool.isRequired,
+  togglemenu: PropTypes.func.isRequired,
+};
 
 export default SideBar;
