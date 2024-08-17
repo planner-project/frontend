@@ -43,8 +43,7 @@ const StyledSwiper = styled(Swiper)`
   .swiper-slide {
     overflow: hidden;
     background-color: #212086;
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
+    border-radius: 10px;
     cursor: pointer;
   }
 
